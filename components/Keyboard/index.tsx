@@ -1,7 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useDimensions from "../../hooks/useDimensions";
-import useSizeClamp from "../../hooks/useSizeClamp";
 import { setPuzzleAttempts } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
 import { IRootReducer } from "../../redux/reducers";
@@ -11,6 +9,9 @@ import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import KeyRow from "./components/KeyRow";
 import { EKeyType } from "./enums/keyType";
 import { IKey } from "./interfaces/key";
+import { BackspaceIcon } from '@heroicons/react/outline'
+// import useDimensions from "../../hooks/useDimensions";
+// import useSizeClamp from "../../hooks/useSizeClamp";
 
 const MAX_SYMBOLS = 8; 
 
@@ -47,10 +48,12 @@ const Keyboard = () => {
         }
     };
 
-    const { height } = useDimensions({ enableDebounce: true });
+    // TODO: Dynamic Margin Bottom to Adjust for Mobile Bottom Browser Navigation
+    // const { height } = useDimensions({ enableDebounce: true });
+    //  marginBottom: `calc(100vh - ${height}px)`
 
     return (
-        <div style={{ marginBottom: `calc(100vh - ${height}px)`}} className="z-10 mt-auto">
+        <div style={{ marginBottom: 15 }} className="z-10 mt-auto">
            <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map((symbol) => ({ 
                symbol, type: EKeyType.SYMBOL 
             }))}/>
@@ -65,6 +68,7 @@ const Keyboard = () => {
                 {
                     symbol: "Back",
                     type: EKeyType.DELETE,
+                    icon: <BackspaceIcon style={{ width: "2em "}} />
                 }]}
             />
         </div>

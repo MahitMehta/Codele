@@ -4,13 +4,13 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from '../redux';
-import { Provider, Provider as ReduxProvider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
       <Head>
-          <title>Codele</title>
+          <title>Codle</title>
           <meta name="description" content="Introducing Wordle For Programmers. Attempt Daily Boolean Statement Guessing Puzzles." />
       </Head>
       <React.StrictMode>
