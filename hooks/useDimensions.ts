@@ -1,10 +1,18 @@
 import React, { useLayoutEffect } from "react";
+import { useDebounce } from "use-debounce";
 
-const useDimensions = () => {
+interface IUseDimensionsProps {
+    enableDebounce?: boolean; 
+    debounceWait?: number; 
+}
+
+const useDimensions = ({ enableDebounce = false, debounceWait = 150 } : IUseDimensionsProps = { enableDebounce: false, debounceWait: 150  }) => {
     const [dimensions, setDimensions] = React.useState({ 
         height: 0,
         width: 0
       })
+
+    const [ debouncedDimensions ] = useDebounce(dimensions, debounceWait);
 
     useLayoutEffect(() => {
         function handleResize() {
@@ -21,7 +29,7 @@ const useDimensions = () => {
         setDimensions({ height: window.innerHeight, width: window.innerWidth });
     }, []);
 
-    return dimensions;
+    return enableDebounce ? debouncedDimensions : dimensions;
 }   
 
 export default useDimensions;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useDimensions from "../../hooks/useDimensions";
+import useSizeClamp from "../../hooks/useSizeClamp";
 import { setPuzzleAttempts } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
 import { IRootReducer } from "../../redux/reducers";
@@ -46,10 +47,11 @@ const Keyboard = () => {
         }
     };
 
-    const { height } = useDimensions();
+    const { height } = useDimensions({ enableDebounce: true });
+    const clampedHeight = useSizeClamp({ minSize: height, size: height, maxSize: 200 });
 
     return (
-        <div style={{ marginBottom: `calc(100vh - ${height}px)`}} className="z-10 mt-auto">
+        <div style={{ marginBottom: `calc(100vh - ${clampedHeight}px)`}} className="z-10 mt-auto">
            <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map((symbol) => ({ 
                symbol, type: EKeyType.SYMBOL 
             }))}/>
