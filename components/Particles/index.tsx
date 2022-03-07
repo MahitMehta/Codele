@@ -9,7 +9,7 @@ const ParticlesBG = () => {
                 fpsLimit: 60,
                 "particles": {
                     "number": {
-                        "value": 160,
+                        "value": 120,
                         "density": {
                             "enable": false
                         }
@@ -23,12 +23,12 @@ const ParticlesBG = () => {
                         }
                     },
                     "line_linked": {
-                        "enable": false
+                        "enable": true
                     },
                     "move": {
                         collisions: true,
                         enable: true,
-                        speed: 0.5,
+                        speed: 0.25,
                         direction: "none",
                         random: false,
                         straight: false,
@@ -40,6 +40,31 @@ const ParticlesBG = () => {
                         }
                     }
                 },
+                responsive: [
+                    {
+                        maxWidth: 750,
+                        options: {
+                            particles: {
+                                number: {
+                                    value: 60,
+                                }
+                            }
+                        }
+                    }
+                ],
+                interactivity: {
+                    detectsOn: "canvas",
+                    events:{
+                        onHover:{
+                            enable: true,
+                            parallax: {
+                                enable: true,
+                                smooth: 100,
+                                force: 25,
+                            }
+                        },
+                    }
+                }
         }} />
     )
 }
