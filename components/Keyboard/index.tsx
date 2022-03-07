@@ -47,7 +47,7 @@ const Keyboard = () => {
         }
     };
 
-    const { height } = useDimensions({ enableDebounce: true, resize: false });
+    const { height } = useDimensions({ enableDebounce: true });
 
     return (
         <div style={{ marginBottom: `calc(100vh - ${height}px)`}} className="z-10 mt-auto">

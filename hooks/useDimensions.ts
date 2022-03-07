@@ -41,7 +41,7 @@ const useDimensions = ({
         setDimensions({ height: window.innerHeight, width: window.innerWidth });
     }, []);
 
-    return enableDebounce ? debouncedDimensions : dimensions;
+    return enableDebounce && (debouncedDimensions.width != 0 || debouncedDimensions.height != 0) ? debouncedDimensions : dimensions;
 }   
 
 export default useDimensions;
