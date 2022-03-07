@@ -4,9 +4,18 @@ import { useDebounce } from "use-debounce";
 interface IUseDimensionsProps {
     enableDebounce?: boolean; 
     debounceWait?: number; 
+    resize?: boolean; 
 }
 
-const useDimensions = ({ enableDebounce = false, debounceWait = 150 } : IUseDimensionsProps = { enableDebounce: false, debounceWait: 150  }) => {
+const useDimensions = ({
+        enableDebounce = false,
+        debounceWait = 150, 
+        resize = true 
+    } : IUseDimensionsProps = { 
+        enableDebounce: false, 
+        debounceWait: 150, 
+        resize: true  
+    }) => {
     const [dimensions, setDimensions] = React.useState({ 
         height: 0,
         width: 0
@@ -21,8 +30,11 @@ const useDimensions = ({ enableDebounce = false, debounceWait = 150 } : IUseDime
                 width: window.innerWidth
             })
         }
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener("resize", handleResize)
+
+        if (resize) {
+            window.addEventListener('resize', handleResize)
+            return () => window.removeEventListener("resize", handleResize)
+        }
     }, [])
 
     useLayoutEffect(() => {
