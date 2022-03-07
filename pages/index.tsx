@@ -7,11 +7,6 @@ import Navbar from '../components/Navbar';
 import ParticlesBG from '../components/Particles';
 
 const Home: NextPage = () => {
-  // temp
-  useEffect(() => {
-    document.querySelector("html")?.classList.add("dark");
-  },[]);
-
   return (
     <div>
       <Head>

@@ -1,12 +1,15 @@
 import React from "react";
 import Particles from "react-tsparticles";
 
+const SSR = typeof window === undefined; 
+
 const ParticlesBG = () => {
     return (
         <Particles
             params={{
                 autoPlay: true,
-                fpsLimit: 60,
+                // Causes a Flicker on Page Load
+                // fpsLimit: 60,
                 "particles": {
                     "number": {
                         "value": 120,

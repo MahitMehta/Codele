@@ -31,7 +31,7 @@ const GameBoard = () => {
 
     return (
         <div className="md:p-5 p-[5px] my-10 md:my-0 w-screen flex justify-center">
-            <div className="border-black/5 dark:border-white/5 w-full md:w-[auto] border not-prose relative bg-slate-50 rounded-xl md:p-5 p-[5px] overflow-hidden dark:bg-slate-800/25">
+            <div className="border-black/5 dark:border-white/5 w-full md:w-[auto] border not-prose relative bg-slate-50 rounded-sm md:p-5 p-[5px] overflow-hidden dark:bg-slate-800/25">
                 {
                     attempts.map((attempt, index) => (
                         <PuzzleRow key={index} attempt={attempt} />

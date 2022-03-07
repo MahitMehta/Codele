@@ -8,7 +8,7 @@ export default class RootDocument extends Document {
 
     render() {
         return (
-          <Html lang="en">
+          <Html className='dark' lang="en">
             <Head key="document"></Head>
             <body className="bg-white dark:bg-slate-900">
               <Main />
