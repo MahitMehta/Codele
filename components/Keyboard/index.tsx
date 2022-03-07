@@ -49,7 +49,7 @@ const Keyboard = () => {
     const { height } = useDimensions();
 
     return (
-        <div style={{ marginBottom: `calc(100vh-${height})`}} className="z-10 mt-auto">
+        <div style={{ marginBottom: `calc(100vh - ${height}px)`}} className="z-10 mt-auto">
            <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map((symbol) => ({ 
                symbol, type: EKeyType.SYMBOL 
             }))}/>
