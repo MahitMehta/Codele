@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useDimensions from "../../hooks/useDimensions";
 import { setPuzzleAttempts } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
 import { IRootReducer } from "../../redux/reducers";
@@ -45,8 +46,10 @@ const Keyboard = () => {
         }
     };
 
+    const { width } = useDimensions();
+
     return (
-        <div className="z-10 mt-auto">
+        <div style={{ marginBottom: `calc(100vh-${width})`}} className="z-10 mt-auto">
            <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map((symbol) => ({ 
                symbol, type: EKeyType.SYMBOL 
             }))}/>

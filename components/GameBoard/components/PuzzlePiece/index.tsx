@@ -20,7 +20,7 @@ const PuzzlePiece : React.FC<PuzzlePieceProps> = ({ symbol, status, index }) => 
                 transition: `transform ${ROTATE_TRANSITION}ms ease`, 
                 transitionDelay: `${TRANSITION_DELAY_FACTOR * index}ms` 
             }}
-            className="flex justify-center items-center bg-white dark:bg-slate-500 rounded-sm border border-black/5 dark:border-white/5  flex-1 max-w-[3.5em] h-14 m-1">
+            className="flex justify-center items-center bg-white dark:bg-slate-500 rounded-md border border-black/5 dark:border-white/5  flex-1 md:max-w-[3.5em] max-w-[3em] h-[3em] md:h-14 m-1">
             <h1    
                 style={{ 
                     transform: status === ESymbolStatus.UNKNOWN ? "rotateX(0deg)" : "rotateX(180deg)",
