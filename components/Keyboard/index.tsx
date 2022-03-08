@@ -66,7 +66,7 @@ const Keyboard = () => {
                 },
                 ...[">=", "<=", "!"].map((symbol) => ({ symbol, type: EKeyType.SYMBOL })),
                 {
-                    symbol: "Back",
+                    symbol: "Delete",
                     type: EKeyType.DELETE,
                     icon: <BackspaceIcon style={{ width: "2em "}} />
                 }]}

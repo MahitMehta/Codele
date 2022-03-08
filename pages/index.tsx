@@ -1,23 +1,23 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect } from 'react'
 import GameBoard from '../components/GameBoard';
 import Keyboard from '../components/Keyboard';
-import Modal from '../components/Modal';
 import Navbar from '../components/Navbar';
 import ParticlesBG from '../components/Particles';
+import useDimensions from '../hooks/useDimensions';
 
 const Home: NextPage = () => {
+  const { height } = useDimensions({ enableDebounce: true });
+
   return (
     <div>
       <Head>
         <title>Game | Codle</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
       <ParticlesBG />
-      {/* <Modal /> */}
-      <main style={{ height: "calc(100vh - 100px)"}} className='flex justify-center min-h-[650px] flex-col items-center'>
+      <Navbar />
+      <main style={{ height: `calc(100vh - ${100}px)` }} className='flex justify-center min-h-[575px] flex-col items-center'>
           <GameBoard />
           <Keyboard />
           <div style={{ 
