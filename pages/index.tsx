@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useLayoutEffect, useState } from 'react';
 import GameBoard from '../components/GameBoard';
 import Keyboard from '../components/Keyboard';
 import Navbar from '../components/Navbar';

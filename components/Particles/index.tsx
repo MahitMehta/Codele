@@ -72,4 +72,4 @@ const ParticlesBG = () => {
     )
 }
 
-export default ParticlesBG;
+export default React.memo(ParticlesBG);

@@ -26,8 +26,8 @@ const useDimensions = ({
     useLayoutEffect(() => {
         function handleResize() {
             setDimensions({
-                height: window.innerHeight,
-                width: window.innerWidth
+                height: document.documentElement.clientHeight,
+                width: document.documentElement.clientWidth,
             })
         }
 
@@ -38,7 +38,7 @@ const useDimensions = ({
     }, [])
 
     useLayoutEffect(() => {
-        setDimensions({ height: window.innerHeight, width: window.innerWidth });
+        setDimensions({ height: document.documentElement.clientHeight, width: document.documentElement.clientWidth});
     }, []);
 
     return enableDebounce && (debouncedDimensions.width != 0 || debouncedDimensions.height != 0) ? debouncedDimensions : dimensions;
