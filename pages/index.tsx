@@ -7,7 +7,7 @@ import ParticlesBG from '../components/Particles';
 import useDimensions from '../hooks/useDimensions';
 
 const Home: NextPage = () => {
-  const { height } = useDimensions({ enableDebounce: true });
+  const { height } = useDimensions({ enableDebounce: true, debounceWait: 100 });
 
   return (
     <div>
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
       <ParticlesBG />
       <Navbar />
-      <main style={{ height: `calc(100vh - ${100}px)` }} className='flex justify-center min-h-[575px] flex-col items-center'>
+      <main style={{ height: height - 100 }} className='flex justify-center min-h-[575px] flex-col items-center'>
           <GameBoard />
           <Keyboard />
           <div style={{ 
