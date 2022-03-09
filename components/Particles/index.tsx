@@ -6,7 +6,8 @@ const SSR = typeof window === undefined;
 const ParticlesBG = () => {
     return (
         <Particles
-            params={{
+            className="fixed top-0 left-0"
+            options={{
                 autoPlay: true,
                 // Causes a Flicker on Page Load
                 // fpsLimit: 60,
