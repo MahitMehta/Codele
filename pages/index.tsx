@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
       <ParticlesBG />
       <Navbar />
-      <main style={{ height: height - 100 }} className='flex justify-center min-h-[575px] flex-col items-center'>
+      <main style={{ height: height - 100 }} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
           <GameBoard />
           <Keyboard />
           <div style={{ 
