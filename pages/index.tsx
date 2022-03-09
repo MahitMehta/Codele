@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useLayoutEffect, useState } from 'react';
 import GameBoard from '../components/GameBoard';
 import Keyboard from '../components/Keyboard';
 import Navbar from '../components/Navbar';
@@ -8,17 +7,17 @@ import ParticlesBG from '../components/Particles';
 import useDimensions from '../hooks/useDimensions';
 
 const Home: NextPage = () => {
-  const { height } = useDimensions({ enableDebounce: true, debounceWait: 100 });
+  // const { height } = useDimensions({ enableDebounce: true, debounceWait: 100 });
 
   return (
-    <div>
+    <div className='h-full'>
       <Head>
         <title>Game | Codle</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ParticlesBG />
       <Navbar />
-      <main style={{ height: height - 100 }} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
+      <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
           <GameBoard />
           <Keyboard />
           <div style={{ 

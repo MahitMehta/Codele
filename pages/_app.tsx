@@ -8,7 +8,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div className='h-full'>
       <Head>
           <title>Codle</title>
           <meta name="description" content="Introducing Wordle For Programmers. Attempt Daily Boolean Statement Guessing Puzzles." />

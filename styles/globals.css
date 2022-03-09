@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --navbar-height: 65px; 
+}
+
 html,
 body {
   padding: 0;
@@ -17,4 +21,8 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+#__next {
+  height: 100%;
 }

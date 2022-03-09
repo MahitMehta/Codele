@@ -8,9 +8,9 @@ export default class RootDocument extends Document {
 
     render() {
         return (
-          <Html className='dark' lang="en">
+          <Html className='dark h-full' lang="en">
             <Head key="document"></Head>
-            <body className="bg-white dark:bg-slate-900">
+            <body className="bg-white dark:bg-slate-900 h-full">
               <Main />
               <NextScript />
             </body>
