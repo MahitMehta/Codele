@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <title>Game | Codle</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ParticlesBG />
+      {/* <ParticlesBG /> */}
       <Navbar />
       <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
           <GameBoard />
