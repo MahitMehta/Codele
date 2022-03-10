@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPuzzleAttempts } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
@@ -11,6 +11,7 @@ import { EKeyType } from "./enums/keyType";
 import { IKey } from "./interfaces/key";
 import { BackspaceIcon } from '@heroicons/react/outline'
 import { IPuzzleCharacter } from "../GameBoard/interfaces/puzzleCharacter";
+import { Key } from "ts-key-enum";
 
 const Keyboard = () => {
     const dispatch = useDispatch();
@@ -55,6 +56,82 @@ const Keyboard = () => {
         return gradedAttempt as IPuzzleCharacter[];
         // return currentAttempt.map((attempt) => ({ ...attempt, status: ESymbolStatus.CORRECT }));
     };
+
+    const handleKeyPress = (key:string) => {
+        if (currentAttempt.length >= sequence.length) return; 
+        dispatch(setCurrentAttempt([ 
+            ...currentAttempt, 
+            { symbol: key, status: ESymbolStatus.UNKNOWN }
+        ]));
+    }
+
+    const keyboardHandler = (e:KeyboardEvent) => {
+        switch (e.key) {
+            case "0": { handleKeyPress("0"); break; }
+            case "1": { handleKeyPress("1"); break; }
+            case "2": { handleKeyPress("2"); break; }
+            case "3": { handleKeyPress("3"); break; }
+            case "4": { handleKeyPress("4"); break; }
+            case "5": { handleKeyPress("5"); break; }
+            case "6": { handleKeyPress("6"); break; }
+            case "7": { handleKeyPress("7"); break; }
+            case "8": { handleKeyPress("8"); break; }
+            case "9": { handleKeyPress("9"); break; }
+            case "(": { handleKeyPress("("); break; }
+            case ")": { handleKeyPress(")"); break; }
+            case "<": { handleKeyPress("<"); break; }
+            case ">": { handleKeyPress(">"); break; }
+            case "t": { handleKeyPress("T"); break; }
+            case "T": { handleKeyPress("T"); break; }
+            case "f": { handleKeyPress("F"); break; }
+            case "F": { handleKeyPress("F"); break; }
+            case "&": { handleKeyPress("&&"); break; }
+            case "|": { handleKeyPress("||"); break; }
+            case "!": { handleKeyPress("!"); break; }
+            case "=": { 
+                if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "<") {
+                    dispatch(setCurrentAttempt([ 
+                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                        { symbol: "<=", status: ESymbolStatus.UNKNOWN }
+                    ]));
+                    return; 
+                } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === ">") {
+                    dispatch(setCurrentAttempt([ 
+                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                        { symbol: ">=", status: ESymbolStatus.UNKNOWN }
+                    ]));
+                    return; 
+                } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "!") {
+                    dispatch(setCurrentAttempt([ 
+                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                        { symbol: "!=", status: ESymbolStatus.UNKNOWN }
+                    ]));
+                    return; 
+                }
+                handleKeyPress("=="); 
+                break; 
+            }
+            case Key.Backspace: {
+                if (!!currentAttempt.length) {
+                    dispatch(setCurrentAttempt(currentAttempt.slice(0, currentAttempt.length - 1)));
+                }
+                break; 
+             }
+            case Key.Enter: {
+                if (currentAttempt.length >= sequence.length) {
+                    dispatch(setPuzzleAttempts([...puzzleAttempts, gradedCurrentAttempt()]));
+                    dispatch(setCurrentAttempt([]));
+                }
+                break; 
+            }
+            default: break; 
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keyup", keyboardHandler);
+        return () => window.removeEventListener("keyup", keyboardHandler);
+    }, [ currentAttempt, sequence, dispatch ]);
 
     const handleKeyboardClick = (key:IKey) => {
         switch (key.type) {
