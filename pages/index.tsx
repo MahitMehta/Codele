@@ -1,13 +1,58 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import GameBoard from '../components/GameBoard';
 import Keyboard from '../components/Keyboard';
 import Navbar from '../components/Navbar';
 import ParticlesBG from '../components/Particles';
-import useDimensions from '../hooks/useDimensions';
+import { setPuzzleSequence } from '../redux/actions/tempBoard';
+import { getPuzzleHandler } from "./api/puzzle";
+import { puzzleSymbolMap, EPuzzleSymbols  } from "../utils/maps/puzzle";
+import { IRootReducer } from '../redux/reducers';
+import { getPuzzlePattern, getPuzzleTimestamp } from '../redux/selectors/board';
+import { setPuzzleAttempts, setPuzzleIdentifers } from '../redux/actions/board';
 
-const Home: NextPage = () => {
-  // const { height } = useDimensions({ enableDebounce: true, debounceWait: 100 });
+interface IStaticProps {
+  sequence: string[];
+  timestamp?: string;
+}
+
+const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
+  const dispatch = useDispatch();
+  const state = useSelector((state:IRootReducer) => state);
+
+  const puzzlePattern = getPuzzlePattern(state);
+  const puzzleTimestamp = getPuzzleTimestamp(state);
+
+  const decodedSequence = useMemo(() => {
+    return sequence.map(symbol => {
+      const decoded = Buffer.from(symbol, "base64").toString("utf8"); 
+      return puzzleSymbolMap[decoded as EPuzzleSymbols];
+    });
+  }, [ sequence ]);
+
+  useEffect(() => {
+      dispatch(setPuzzleSequence(decodedSequence));
+  }, [ decodedSequence, timestamp ]); 
+
+  useEffect(() => { 
+      if (!sequence.length || !timestamp) return; 
+      
+      if (!puzzlePattern || !puzzleTimestamp) {
+          dispatch(setPuzzleIdentifers({ 
+            puzzlePattern: sequence.join(""), 
+            puzzleTimestamp: timestamp 
+          }));
+          dispatch(setPuzzleAttempts([]));
+      } else if (sequence.join("") !== puzzlePattern || puzzleTimestamp != timestamp) {
+          dispatch(setPuzzleIdentifers({ 
+            puzzlePattern: sequence.join(""), 
+            puzzleTimestamp: timestamp 
+          }));
+          dispatch(setPuzzleAttempts([]));
+      }
+  }, []);
 
   return (
     <div className='h-full'>
@@ -26,6 +71,19 @@ const Home: NextPage = () => {
       </main>
     </div>
   )
+}
+
+
+export async function getStaticProps() {
+  const { sequence = [], timestamp } = await getPuzzleHandler();
+  return {
+    props: { 
+      sequence: sequence.map((symbol) => Buffer.from(symbol).toString("base64")),
+      timestamp
+    },
+    // - At most once every 1 minutes
+    revalidate: 60, // In seconds
+  }
 }
 
 export default Home

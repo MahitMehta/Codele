@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { useDebounce } from "use-debounce";
 
 interface IUseDimensionsProps {
@@ -23,7 +23,7 @@ const useDimensions = ({
 
     const [ debouncedDimensions ] = useDebounce(dimensions, debounceWait);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         function handleResize() {
             setDimensions({
                 height: document.documentElement.clientHeight,
@@ -37,7 +37,7 @@ const useDimensions = ({
         }
     }, [])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         setDimensions({ height: document.documentElement.clientHeight, width: document.documentElement.clientWidth});
     }, []);
 

@@ -4,6 +4,8 @@ import { IAction } from "../interfaces/action";
 
 export interface IBoardReducer {
     puzzleAttempts: IPuzzleCharacter[][],
+    puzzlePattern?: string; 
+    puzzleTimestamp?: string; 
 }
 
 const initialState : IBoardReducer = {
@@ -14,6 +16,13 @@ const boardReducer = (state:IBoardReducer=initialState, action:IAction) : IBoard
     switch(action.type) {
         case EBoard.SET_PUZZLE_ATTEMPTS: {
             return { ...state, puzzleAttempts: action.payload };
+        }   
+        case EBoard.SET_PUZZLE_IDENTIFERS: {
+            return { 
+                ...state,
+                puzzlePattern: action.payload.puzzlePattern,
+                puzzleTimestamp: action.payload.puzzleTimestamp
+            }
         }
         default: {
             return state; 

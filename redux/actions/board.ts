@@ -5,3 +5,8 @@ export const setPuzzleAttempts = (payload:IPuzzleCharacter[][]) : ISetPuzzleAtte
     type: EBoard.SET_PUZZLE_ATTEMPTS,
     payload,
 })
+
+export const setPuzzleIdentifers = (payload: { puzzlePattern: string, puzzleTimestamp: string }) => ({
+    type: EBoard.SET_PUZZLE_IDENTIFERS,
+    payload,
+})
