@@ -6,7 +6,6 @@ const ParticlesBG = () => {
 
     useEffect(() => {
         if (canvasRef?.current) {
-            console.log(canvasRef.current);
             canvasRef.current.props.style.height = "100vh !important";
         }
     }, [ canvasRef ]);

@@ -58,7 +58,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
     <div className='h-full'>
       <Head>
         <title>Game | Codle</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://codle.mahitm.com/" />
       </Head>
       <ParticlesBG />
       <Navbar />
