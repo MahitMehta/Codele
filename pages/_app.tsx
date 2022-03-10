@@ -12,8 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <div className='h-full'>
       <Head>
           <title>Codle</title>
+          <meta name="theme-color" content="#111729" />
           <link rel="icon" href="/favicon.ico" />
-          <meta name="description" content="" />
+          <link rel="apple-touch-icon" href="/favicon.ico" />
       </Head>
       <NextSeo
             title="Codle"
