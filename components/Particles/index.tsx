@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Particles from "react-tsparticles";
 
-const SSR = typeof window === undefined; 
-
 const ParticlesBG = () => {
+    const canvasRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (canvasRef?.current) {
+            console.log(canvasRef.current);
+            canvasRef.current.props.style.height = "100vh !important";
+        }
+    }, [ canvasRef ]);
+
     return (
         <Particles
-            style={{ maxWidth: "100vw" }}
-            className="fixed top-0 left-0"
+            ref={canvasRef}
+            style={{ maxWidth: "100vw", height: "100vh !important" }}
+            canvasClassName="f-screen !h-[100vh]"
+            height="100vh !important"
+            className="fixed top-0 left-0 h-screen w-screen overflow-hidden"
             options={{
                 autoPlay: true,
+                style: {
+                    height: "100vh !important",
+                    maxHeight: "100vh !important",
+                },
                 // Causes a Flicker on Page Load
                 // fpsLimit: 60,
                 "particles": {
