@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>Codle</title>
           <meta name="theme-color" content="#111729" />
           <link rel="icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/logo.png" />
       </Head>
       <NextSeo
             title="Codle"
