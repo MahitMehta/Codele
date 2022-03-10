@@ -6,6 +6,7 @@ const SSR = typeof window === undefined;
 const ParticlesBG = () => {
     return (
         <Particles
+            style={{ maxWidth: "100vw" }}
             className="fixed top-0 left-0"
             options={{
                 autoPlay: true,
