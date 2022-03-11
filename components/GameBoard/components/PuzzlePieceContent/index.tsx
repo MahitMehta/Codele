@@ -26,7 +26,7 @@ const PuzzlePieceContent: React.FC<PuzzlePieceProps> = ({ index, status, symbol 
                 // "--piece-background": pieceColorMap[status],
                 // "--index": index,
             }}
-            className={`${styles.puzzle_content} flex justify-center items-center flex-1 w-full h-full rounded-md`}>
+            className={`${styles.puzzle_content} flex justify-center items-center flex-1 w-full h-full rounded-sm`}>
             <h1    
                 style={{ 
                     transform: status === ESymbolStatus.UNKNOWN ? "rotateX(0deg)" : "rotateX(180deg)",

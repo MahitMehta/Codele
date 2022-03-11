@@ -56,7 +56,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
 
   return (
     <div className='h-full'>
-      <Head>
+      <Head key="index">
         <title>Game | Codle</title>
         <link rel="canonical" href="https://codle.mahitm.com/"/>
       </Head>

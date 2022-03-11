@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -6,8 +6,20 @@ import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from '../redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { NextSeo } from 'next-seo';
+import ReactGA from 'react-ga';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    const env = process.env.NODE_ENV;
+    ReactGA.initialize("G-QXRM4SF520", { 
+      gaOptions: {
+        siteSpeedSampleRate: 100,
+      },
+      debug: env === "development",
+      titleCase: false,
+    });
+  }, []);
+
   return (
     <div className='h-full'>
       <Head>
@@ -17,9 +29,15 @@ function MyApp({ Component, pageProps }: AppProps) {
           <link rel="apple-touch-icon" href="/logo.png" />
       </Head>
       <NextSeo
+            key={"root"}
             title="Codle"
+            additionalMetaTags={[
+              {
+                name: "keywords",
+                content: "wordle, codle, game, word, crossword"
+              }
+            ]}
             description='Introducing Wordle For Programmers. Attempt Daily Boolean Statement Guessing Puzzles.'
-            canonical="https://codle.mahitm.com/"
             openGraph={{
               url: "https://codle.mahitm.com/",
               title: "Wordle For Programmers",
