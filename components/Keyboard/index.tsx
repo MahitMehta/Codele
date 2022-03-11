@@ -42,9 +42,8 @@ const Keyboard = () => {
 
             // Prevents Attempting to Replace an Underscore or a Letter that doesn't exist
             if (!!answerCharacter || (answerCharacter && sequence.indexOf(answerCharacter) == -1)) continue; 
-           
-            let guessLetterCount = gradedAttempt.filter((attempt) => attempt?.symbol === guessCharacter).length;
-            let answerLetterCount = sequence.filter((symbol) => symbol === guessCharacter).length;
+            let guessLetterCount = gradedAttempt.filter((attempt) => attempt?.symbol.toLowerCase() === guessCharacter).length;
+            let answerLetterCount = sequence.filter((symbol) => symbol.toLowerCase() === guessCharacter).length;
            
             if (guessLetterCount < answerLetterCount) {
                 gradedAttempt[i] = { status: ESymbolStatus.PARTIAL, symbol: currentAttempt[i].symbol };
