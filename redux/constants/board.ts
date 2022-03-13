@@ -3,6 +3,7 @@ import { IPuzzleCharacter } from "../../components/GameBoard/interfaces/puzzleCh
 export enum EBoard {
     SET_PUZZLE_ATTEMPTS = "SET_PUZZLE_ATTEMPTS",
     SET_PUZZLE_IDENTIFERS = "SET_PUZZLE_IDENTIFERS",
+    SET_STATUS = "SET_STATUS"
 }
 
 export interface ISetPuzzleAttempts {

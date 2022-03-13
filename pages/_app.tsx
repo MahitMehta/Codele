@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { PersistGate } from 'redux-persist/integration/react';
-import store, { persistor } from '../redux';
+import store, { persistor, wrapper } from '../redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { NextSeo } from 'next-seo';
 import ReactGA from 'react-ga';
 
+const DEBUG = process.env.NODE_ENV === "development"; 
+
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    const env = process.env.NODE_ENV;
     ReactGA.initialize("G-QXRM4SF520", { 
       gaOptions: {
         siteSpeedSampleRate: 100,
       },
-      debug: env === "development",
+      debug: DEBUG,
       titleCase: false,
     });
   }, []);
 
-  return (
+  return  (
     <div className='h-full'>
       <Head>
           <title>Codle</title>
@@ -73,4 +74,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default wrapper.withRedux(MyApp);

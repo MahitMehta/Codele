@@ -1,0 +1,12 @@
+.key_content {
+    animation: show 450ms;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    } 
+    to {
+        opacity: 1;
+    }
+}

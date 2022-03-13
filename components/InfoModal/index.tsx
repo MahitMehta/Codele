@@ -1,8 +1,8 @@
 import React from "react";
 import { XIcon } from "@heroicons/react/outline";
-import PuzzlePiece from "../GameBoard/components/PuzzlePiece";
 import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import PuzzleRow from "../GameBoard/components/PuzzleRow";
+import styles from "./styles.module.css";
 
 interface InfoModalProps {
     open: boolean,
@@ -13,10 +13,10 @@ const InfoModal : React.FC<InfoModalProps> = ({ open, setOpen }) => {
     return (
         <div 
             style={{ backgroundColor: "rgba(0, 0, 0, 0.25)"}} 
-            className={`flex ${ open ? "" : "hidden"} overflow-y-auto overflow-x-hidden fixed h-screen right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal" id="info-modal`}>
+            className={`flex ${ open ? styles.modal_open : "pointer-events-none" } overflow-hidden opacity-0 transition-all  overflow-y-auto fixed h-screen right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal" id="info-modal`}>
             <div className="flex justify-center relative px-4 md:px-0 py-[15px] h-screen w-full max-w-md">
-                <div className="flex items-center overflow-auto relative rounded-lg">
-                    <div className="h-min my-auto bg-white rounded-lg shadow dark:bg-gray-700">
+                <div className={`${ open ? "translate-y-0" : "translate-y-[100px]"} transition-transform flex items-center  overflow-auto relative rounded-lg`}>
+                    <div className="h-min my-auto bg-white  rounded-lg shadow dark:bg-gray-700">
                         <div className="flex justify-between items-center p-3 px-5 rounded-lg border-b dark:border-gray-600">
                             <h3 className="text-xl font-medium capitalize text-gray-900 dark:text-white">
                                 how to play

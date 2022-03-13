@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPuzzleAttempts } from "../../redux/actions/board";
+import { setPuzzleAttempts, setPuzzleStatus } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
 import { IRootReducer } from "../../redux/reducers";
 import { getPuzzleAttempts } from "../../redux/selectors/board";
@@ -12,6 +12,7 @@ import { IKey } from "./interfaces/key";
 import { BackspaceIcon } from '@heroicons/react/outline'
 import { IPuzzleCharacter } from "../GameBoard/interfaces/puzzleCharacter";
 import { Key } from "ts-key-enum";
+import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 
 const Keyboard = () => {
     const dispatch = useDispatch();
@@ -53,7 +54,6 @@ const Keyboard = () => {
         }
 
         return gradedAttempt as IPuzzleCharacter[];
-        // return currentAttempt.map((attempt) => ({ ...attempt, status: ESymbolStatus.CORRECT }));
     };
 
     const handleKeyPress = (key:string) => {
@@ -62,6 +62,39 @@ const Keyboard = () => {
             ...currentAttempt, 
             { symbol: key, status: ESymbolStatus.UNKNOWN }
         ]));
+    }
+
+    const handleEnter = () => {
+        const newAttempt = gradedCurrentAttempt(); 
+        const strAttempt = newAttempt.map(c => {
+            switch(c.symbol) {
+                case "T": return "true";
+                case "F": return "false";
+                default: return c.symbol;
+            }
+        }).join('');
+        try {
+            const valid = eval(`!!(${strAttempt})`);
+            if (!valid) return; 
+            // Alert Client
+        } catch (e:any) {
+            // Alert Client
+            return; 
+        }
+
+        if (currentAttempt.length >= sequence.length) {
+            const solved = newAttempt.every((s) => s.status === ESymbolStatus.CORRECT);
+
+            dispatch(setPuzzleAttempts([...puzzleAttempts, newAttempt ]));
+            dispatch(setCurrentAttempt([]));
+            if (solved) dispatch(setPuzzleStatus(EPuzzleStatus.WON));
+        }
+    }
+
+    const handleBack = () => {
+        if (!!currentAttempt.length) {
+            dispatch(setCurrentAttempt(currentAttempt.slice(0, currentAttempt.length - 1)));
+        }
     }
 
     const keyboardHandler = (e:KeyboardEvent) => {
@@ -110,20 +143,9 @@ const Keyboard = () => {
                 handleKeyPress("=="); 
                 break; 
             }
-            case Key.Backspace: {
-                if (!!currentAttempt.length) {
-                    dispatch(setCurrentAttempt(currentAttempt.slice(0, currentAttempt.length - 1)));
-                }
-                break; 
-             }
-            case Key.Enter: {
-                if (currentAttempt.length >= sequence.length) {
-                    dispatch(setPuzzleAttempts([...puzzleAttempts, gradedCurrentAttempt()]));
-                    dispatch(setCurrentAttempt([]));
-                }
-                break; 
-            }
-            default: break; 
+            case Key.Backspace: { handleBack(); break; }
+            case Key.Enter: { handleEnter(); break; }
+            default: { break; }
         }
     };
 
@@ -134,34 +156,12 @@ const Keyboard = () => {
 
     const handleKeyboardClick = (key:IKey) => {
         switch (key.type) {
-            case EKeyType.SYMBOL: {
-                if (currentAttempt.length >= sequence.length) return; 
-                dispatch(setCurrentAttempt([ 
-                    ...currentAttempt, 
-                    { symbol: key.symbol, status: ESymbolStatus.UNKNOWN }
-                ]));
-                break; 
-            }
-            case EKeyType.ENTER: {
-                if (currentAttempt.length >= sequence.length) {
-                    dispatch(setPuzzleAttempts([...puzzleAttempts, gradedCurrentAttempt()]));
-                    dispatch(setCurrentAttempt([]));
-                }
-                break; 
-            }
-            case EKeyType.DELETE: {
-                if (!!currentAttempt.length) {
-                    dispatch(setCurrentAttempt(currentAttempt.slice(0, currentAttempt.length - 1)));
-                }
-                break; 
-            }
-            default: return; 
+            case EKeyType.SYMBOL: { handleKeyPress(key.symbol); break; }
+            case EKeyType.ENTER: { handleEnter(); break; }
+            case EKeyType.DELETE: { handleBack(); break; }
+            default: { return; }
         }
     };
-
-    // TODO: Dynamic Margin Bottom to Adjust for Mobile Bottom Browser Navigation
-    // const { height } = useDimensions({ enableDebounce: true });
-    //  marginBottom: `calc(100vh - ${height}px)`
 
     return (
         <div style={{ marginBottom: 15 }} className="z-10 mt-auto">

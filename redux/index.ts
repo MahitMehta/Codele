@@ -1,6 +1,7 @@
 import { 
     createStore, 
 } from "redux";
+import {createWrapper } from 'next-redux-wrapper';
 
 import { reducers } from "./reducers";
 import { persistReducer, persistStore  } from 'redux-persist';
@@ -12,10 +13,17 @@ const reducerPersisted = persistReducer({
     blacklist: [ "tempBoard" ],
 }, reducers);
 
-const store = createStore(reducerPersisted);
+const store = createStore<any, any, unknown, unknown>(reducerPersisted);
 
 const persistor = persistStore(store as any);
 
+const makeStore = () => {
+    (store as any).__persistor = persistStore(store as any);
+    return store; 
+}
+
+export const wrapper = createWrapper(makeStore);
+
 export { persistor };
 
-export default store; 
+export default store;
