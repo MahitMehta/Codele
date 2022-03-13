@@ -10,7 +10,7 @@ import storage from 'redux-persist/lib/storage'
 const reducerPersisted = persistReducer({
     key: "root",
     storage,
-    blacklist: [ "tempBoard" ],
+    blacklist: [ "tempBoard", "snackbar" ],
 }, reducers);
 
 const store = createStore<any, any, unknown, unknown>(reducerPersisted);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPuzzleAttempts, setPuzzleStatus } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
@@ -13,6 +13,7 @@ import { BackspaceIcon } from '@heroicons/react/outline'
 import { IPuzzleCharacter } from "../GameBoard/interfaces/puzzleCharacter";
 import { Key } from "ts-key-enum";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
+import { setSnackbarItem } from "../../redux/actions/snackbar";
 
 const Keyboard = () => {
     const dispatch = useDispatch();
@@ -65,6 +66,11 @@ const Keyboard = () => {
     }
 
     const handleEnter = () => {
+        if (currentAttempt.length < sequence.length) {
+            dispatch(setSnackbarItem({ title: "Not Enough Symbols "}));
+            return; 
+        }
+
         const newAttempt = gradedCurrentAttempt(); 
         const strAttempt = newAttempt.map(c => {
             switch(c.symbol) {

@@ -12,6 +12,7 @@ import { puzzleSymbolMap, EPuzzleSymbols  } from "../utils/maps/puzzle";
 import { IRootReducer } from '../redux/reducers';
 import { getPuzzlePattern, getPuzzleTimestamp } from '../redux/selectors/board';
 import { setPuzzleAttempts, setPuzzleIdentifers } from '../redux/actions/board';
+import Snackbar from '../components/Snackbar';
 
 interface IStaticProps {
   sequence: string[];
@@ -61,6 +62,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
         <link rel="canonical" href="https://codle.mahitm.com/"/>
       </Head>
       <ParticlesBG />
+      {/* <Snackbar /> */}
       <Navbar />
       <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
           <GameBoard />
