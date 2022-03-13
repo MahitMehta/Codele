@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPuzzleAttempts, setPuzzleStatus } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
 import { IRootReducer } from "../../redux/reducers";
-import { getPuzzleAttempts } from "../../redux/selectors/board";
+import { getPuzzleAttempts, getPuzzleStatus } from "../../redux/selectors/board";
 import { getCurrentAttempt, getPuzzleSequence } from "../../redux/selectors/tempBoard";
 import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import KeyRow from "./components/KeyRow";
@@ -103,7 +103,12 @@ const Keyboard = () => {
         }
     }
 
+    const puzzleStatus = getPuzzleStatus(state);
+    const keyboardDisabled = [ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus)
+
     const keyboardHandler = (e:KeyboardEvent) => {
+        if (keyboardDisabled) return; 
+
         switch (e.key) {
             case "0": { handleKeyPress("0"); break; }
             case "1": { handleKeyPress("1"); break; }

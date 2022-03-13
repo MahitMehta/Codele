@@ -25,7 +25,7 @@ const Key : React.FC<KeyProps> = ({ symbol, type, onClick, icon}) => {
 
     return (
         <button
-            disabled={puzzleStatus !== EPuzzleStatus.IN_PROGRESS}
+            disabled={[ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus)}
             name={`${symbol} Key`}
             title={symbol}
             onClick={handleClick}
