@@ -22,7 +22,7 @@ const SnackItem : React.FC<SnackItemProps> = ({ onDisappear, disappear, ...item 
         }).fromTo(containerRef.current, {
             opacity: 1,
         }, {
-            opacity: 0, duration: 0.25
+            opacity: 0, duration: 0.15
         }).eventCallback("onComplete", () => {
             onDisappear();
         });
