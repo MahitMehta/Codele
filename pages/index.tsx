@@ -62,7 +62,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
         <link rel="canonical" href="https://codle.mahitm.com/"/>
       </Head>
       <ParticlesBG />
-      {/* <Snackbar /> */}
+      <Snackbar />
       <Navbar />
       <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
           <GameBoard />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { IRootReducer } from "../../redux/reducers";
 import { getSnackItem } from "../../redux/selectors/snackbar";
@@ -11,36 +11,46 @@ interface IStateSnackItem extends ISnackItem {
 const Snackbar = () => {
     const [ items, setItems ] = useState<IStateSnackItem[]>([]);
 
+    const itemsRef = useRef<IStateSnackItem[]>([]);
+
+    itemsRef.current = items; 
+
     const state = useSelector((state:IRootReducer) => state);
     const snackItem = getSnackItem(state);
     const handleNewSnackItem = useCallback(() => {
-        if (!snackItem) return; 
+        if (!snackItem || items.length >= 3) return; 
          
         setItems([ { ...snackItem, disappear: false }, ...items, ])
-
-        setTimeout(() => {
-            setDisappear();
-        }, 1000);
     }, [ snackItem ]);
 
     useEffect(handleNewSnackItem, [ handleNewSnackItem ]);
 
-    const handleUnmountItem = () => {
-        // setItems([ ...items.slice(0, items.length - 1) ])
-    };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const oldItems = items.filter((item) => !item.permanent);
+            if (oldItems.length) {
+                setItems([
+                    ... oldItems.slice(0, items.length - 1),
+                    { ...oldItems[oldItems.length - 1], disappear: true }
+                ])
+            }
+        }, 750);
+        return () => {
+            clearInterval(interval);
+        }
+    }, [ items ]);
 
-    const setDisappear = () => {
-        const adjustedItem = { ...items[items.length - 1], disappear: true };
-        console.log(items, adjustedItem);
-       // setItems([ ...items.slice(0, items.length), adjustedItem])
+    const handleUnmountItem = () => {
+        const updatedItems = [ ...itemsRef.current.slice(0, itemsRef.current.length - 1) ];
+        setItems(updatedItems);
     };
 
     return (
-        <div className="w-full h-full z-[9999] fixed pointer-events-none flex-col items-center">
+        <div className="w-full h-full z-[1] fixed pointer-events-none flex-col items-center">
             <div className="mt-24">
                 {
-                    items.map((item, index) => {
-                        return <SnackItem setDisappear={setDisappear} onDisappear={handleUnmountItem} key={index} { ...item }/>
+                    itemsRef.current.map((item, index) => {
+                        return <SnackItem onDisappear={handleUnmountItem} key={index} { ...item }/>
                     })
                 }
             </div>

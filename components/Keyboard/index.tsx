@@ -15,6 +15,8 @@ import { Key } from "ts-key-enum";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
 
+const MAX_ATTEMPTS = 5; 
+
 const Keyboard = () => {
     const dispatch = useDispatch();
     const state = useSelector((state:IRootReducer) => state);
@@ -66,8 +68,10 @@ const Keyboard = () => {
     }
 
     const handleEnter = () => {
-        if (currentAttempt.length < sequence.length) {
-            dispatch(setSnackbarItem({ title: "Not Enough Symbols "}));
+        if (currentAttempt.length === 0) return; 
+
+        else if (currentAttempt.length < sequence.length) {
+            dispatch(setSnackbarItem({ title: "Not Enough Symbols"}));
             return; 
         }
 
@@ -81,10 +85,12 @@ const Keyboard = () => {
         }).join('');
         try {
             const valid = eval(`!!(${strAttempt})`);
-            if (!valid) return; 
-            // Alert Client
+            if (!valid) {
+                dispatch(setSnackbarItem({ title: "Enter True Statement"}));
+                return; 
+            }
         } catch (e:any) {
-            // Alert Client
+            dispatch(setSnackbarItem({ title: "Invalid Statement"}));
             return; 
         }
 
@@ -93,7 +99,14 @@ const Keyboard = () => {
 
             dispatch(setPuzzleAttempts([...puzzleAttempts, newAttempt ]));
             dispatch(setCurrentAttempt([]));
-            if (solved) dispatch(setPuzzleStatus(EPuzzleStatus.WON));
+            if (solved) {
+                dispatch(setPuzzleStatus(EPuzzleStatus.WON));
+                dispatch(setSnackbarItem({ title: "Genius!", permanent: true }))
+            }
+            else if (!solved && puzzleAttempts.length === MAX_ATTEMPTS) {
+                dispatch(setPuzzleStatus(EPuzzleStatus.FAIL));
+                dispatch(setSnackbarItem({ title: sequence.join(""), permanent: true }));
+            } 
         }
     }
 
