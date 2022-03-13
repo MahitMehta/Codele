@@ -11,8 +11,9 @@ import { getPuzzleHandler } from "./api/puzzle";
 import { puzzleSymbolMap, EPuzzleSymbols  } from "../utils/maps/puzzle";
 import { IRootReducer } from '../redux/reducers';
 import { getPuzzlePattern, getPuzzleTimestamp } from '../redux/selectors/board';
-import { setPuzzleAttempts, setPuzzleIdentifers } from '../redux/actions/board';
+import { setPuzzleAttempts, setPuzzleIdentifers, setPuzzleStatus } from '../redux/actions/board';
 import Snackbar from '../components/Snackbar';
+import { EPuzzleStatus } from '../redux/enums/puzzleStatus';
 
 interface IStaticProps {
   sequence: string[];
@@ -45,12 +46,14 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
             puzzlePattern: sequence.join(""), 
             puzzleTimestamp: timestamp 
           }));
+          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS));
           dispatch(setPuzzleAttempts([]));
       } else if (sequence.join("") !== puzzlePattern || puzzleTimestamp != timestamp) {
           dispatch(setPuzzleIdentifers({ 
             puzzlePattern: sequence.join(""), 
             puzzleTimestamp: timestamp 
           }));
+          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS));
           dispatch(setPuzzleAttempts([]));
       }
   }, []);
