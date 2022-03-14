@@ -46,7 +46,7 @@ const Navbar = () => {
         <>
             <StatsModal open={statsModalOpen} setOpen={setStatsModalOpen} />
             <InfoModal open={infoModalOpen} setOpen={handleInfoModal} /> 
-            <nav className="flex relative justify-between py-3 border-b border-slate-900/10 lg:px-8 dark:border-slate-300/10 mx-4">
+            <nav className="flex relative justify-between py-3 border-b border-slate-900/10 lg:px-8 dark:border-slate-300/10 mx-4 !h-[65px]">
                 <div className="flex z-1">
                     <button 
                         title="How to Play" 
