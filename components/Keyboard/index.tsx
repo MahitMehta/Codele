@@ -14,6 +14,8 @@ import { IPuzzleCharacter } from "../GameBoard/interfaces/puzzleCharacter";
 import { Key } from "ts-key-enum";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
+import { getGamesPlayed, getGamesWon, getCurrentStreak, getMaxStreak } from "../../redux/selectors/stats";
+import { setCurrentStreak, setGamesPlayed, setGamesWon, setMaxStreak } from "../../redux/actions/stats";
 
 const MAX_ATTEMPTS = 5; 
 
@@ -23,6 +25,12 @@ const Keyboard = () => {
     const currentAttempt = getCurrentAttempt(state); 
     const puzzleAttempts = getPuzzleAttempts(state);
     const sequence = getPuzzleSequence(state);
+
+    // Statistics
+    const gamesPlayed = getGamesPlayed(state) || 0;
+    const gamesWon = getGamesWon(state) || 0;
+    const currentStreak = getCurrentStreak(state) || 0;
+    const maxStreak = getMaxStreak(state) || 0;
 
     const gradedCurrentAttempt = () => {
         const gradedAttempt:(IPuzzleCharacter | null)[] = [];
@@ -102,10 +110,19 @@ const Keyboard = () => {
             if (solved) {
                 dispatch(setPuzzleStatus(EPuzzleStatus.WON));
                 dispatch(setSnackbarItem({ title: "Genius!", permanent: true }))
+                dispatch(setGamesPlayed(gamesPlayed + 1));
+                dispatch(setGamesWon(gamesWon + 1));
+                dispatch(setCurrentStreak(currentStreak + 1));
+
+                if (currentStreak + 1 > maxStreak) {
+                    dispatch(setMaxStreak(maxStreak + 1));
+                }
             }
             else if (!solved && puzzleAttempts.length === MAX_ATTEMPTS) {
                 dispatch(setPuzzleStatus(EPuzzleStatus.FAIL));
                 dispatch(setSnackbarItem({ title: sequence.join(""), permanent: true }));
+                dispatch(setGamesPlayed(gamesPlayed + 1));
+                dispatch(setCurrentStreak(0));
             } 
         }
     }
@@ -116,9 +133,33 @@ const Keyboard = () => {
         }
     }
 
+    const handleEqual = () => {
+        if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "<") {
+            dispatch(setCurrentAttempt([ 
+                ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                { symbol: "<=", status: ESymbolStatus.UNKNOWN }
+            ]));
+            return; 
+        } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === ">") {
+            dispatch(setCurrentAttempt([ 
+                ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                { symbol: ">=", status: ESymbolStatus.UNKNOWN }
+            ]));
+            return; 
+        } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "!") {
+            dispatch(setCurrentAttempt([ 
+                ...currentAttempt.slice(0, currentAttempt.length - 1), 
+                { symbol: "!=", status: ESymbolStatus.UNKNOWN }
+            ]));
+            return; 
+        }
+        handleKeyPress("=="); 
+    }
+
     const puzzleStatus = getPuzzleStatus(state);
     const keyboardDisabled = [ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus)
 
+    
     const keyboardHandler = (e:KeyboardEvent) => {
         if (keyboardDisabled) return; 
 
@@ -144,29 +185,7 @@ const Keyboard = () => {
             case "&": { handleKeyPress("&&"); break; }
             case "|": { handleKeyPress("||"); break; }
             case "!": { handleKeyPress("!"); break; }
-            case "=": { 
-                if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "<") {
-                    dispatch(setCurrentAttempt([ 
-                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
-                        { symbol: "<=", status: ESymbolStatus.UNKNOWN }
-                    ]));
-                    return; 
-                } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === ">") {
-                    dispatch(setCurrentAttempt([ 
-                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
-                        { symbol: ">=", status: ESymbolStatus.UNKNOWN }
-                    ]));
-                    return; 
-                } else if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "!") {
-                    dispatch(setCurrentAttempt([ 
-                        ...currentAttempt.slice(0, currentAttempt.length - 1), 
-                        { symbol: "!=", status: ESymbolStatus.UNKNOWN }
-                    ]));
-                    return; 
-                }
-                handleKeyPress("=="); 
-                break; 
-            }
+            case "=": { handleEqual(); break; }
             case Key.Backspace: { handleBack(); break; }
             case Key.Enter: { handleEnter(); break; }
             default: { break; }

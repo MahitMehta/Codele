@@ -46,7 +46,7 @@ const Snackbar = () => {
     };
 
     return (
-        <div className="w-full h-full z-[1] fixed pointer-events-none flex-col items-center">
+        <div className="w-full h-full z-[999] fixed pointer-events-none flex-col items-center">
             <div className="mt-24">
                 {
                     itemsRef.current.map((item, index) => {
