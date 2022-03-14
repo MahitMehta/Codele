@@ -16,8 +16,9 @@ import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
 import { getGamesPlayed, getGamesWon, getCurrentStreak, getMaxStreak } from "../../redux/selectors/stats";
 import { setCurrentStreak, setGamesPlayed, setGamesWon, setMaxStreak } from "../../redux/actions/stats";
+import ReactGA from "react-ga";
 
-const MAX_ATTEMPTS = 5; 
+const MAX_ATTEMPTS = 6; 
 
 const Keyboard = () => {
     const dispatch = useDispatch();
@@ -75,6 +76,12 @@ const Keyboard = () => {
     }
 
     const handleEnter = () => {
+        ReactGA.event({
+            category: 'Game Status',
+            action: 'Daily Game In Progress',
+            value: puzzleAttempts.length + 1,
+        });
+
         if (currentAttempt.length === 0) return; 
 
         else if (currentAttempt.length < sequence.length) {
@@ -116,12 +123,22 @@ const Keyboard = () => {
                 if (currentStreak + 1 > maxStreak) {
                     dispatch(setMaxStreak(maxStreak + 1));
                 }
+
+                ReactGA.event({
+                    category: 'Game Status',
+                    action: 'Won Daily Game',
+                });
             }
-            else if (!solved && puzzleAttempts.length === MAX_ATTEMPTS) {
+            else if (!solved && puzzleAttempts.length === MAX_ATTEMPTS - 1) {
                 dispatch(setPuzzleStatus(EPuzzleStatus.FAIL));
                 dispatch(setSnackbarItem({ title: sequence.join(""), permanent: true }));
                 dispatch(setGamesPlayed(gamesPlayed + 1));
                 dispatch(setCurrentStreak(0));
+
+                ReactGA.event({
+                    category: 'Game Status',
+                    action: 'Lost Daily Game',
+                });
             } 
         }
     }

@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       debug: DEBUG,
       titleCase: false,
     });
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
   return  (

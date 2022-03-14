@@ -14,6 +14,7 @@ import { getPuzzlePattern, getPuzzleTimestamp } from '../redux/selectors/board';
 import { setPuzzleAttempts, setPuzzleIdentifers, setPuzzleStatus } from '../redux/actions/board';
 import Snackbar from '../components/Snackbar';
 import { EPuzzleStatus } from '../redux/enums/puzzleStatus';
+import ReactGA from "react-ga";
 
 interface IStaticProps {
   sequence: string[];
