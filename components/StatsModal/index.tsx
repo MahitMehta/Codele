@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import config from "../../config";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { IRootReducer } from "../../redux/reducers";
@@ -9,8 +10,6 @@ import { getCurrentStreak, getGamesPlayed, getGamesWon, getMaxStreak } from "../
 import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import Modal, { ModalProps } from "../Modal";
 import Countdown from "./components/Countdown";
-
-const MAX_ATTEMPTS = 6;
 
 interface StatsModalProps extends ModalProps {}
 
@@ -56,7 +55,7 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
             result += "\n";
         }
 
-        const message = `Codle ${puzzleAttempts.length}/${MAX_ATTEMPTS}\n\n${result}`;
+        const message = `Codle ${puzzleAttempts.length}/${config.max_attempts}\n\n${result}`;
 
         if (navigator.share && navigator.share !== undefined) {
             navigator.share({

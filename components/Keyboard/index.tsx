@@ -17,8 +17,7 @@ import { setSnackbarItem } from "../../redux/actions/snackbar";
 import { getGamesPlayed, getGamesWon, getCurrentStreak, getMaxStreak } from "../../redux/selectors/stats";
 import { setCurrentStreak, setGamesPlayed, setGamesWon, setMaxStreak } from "../../redux/actions/stats";
 import ReactGA from "react-ga";
-
-const MAX_ATTEMPTS = 6; 
+import config from "../../config";
 
 const Keyboard = () => {
     const dispatch = useDispatch();
@@ -129,9 +128,16 @@ const Keyboard = () => {
                     action: 'Won Daily Game',
                 });
             }
-            else if (!solved && puzzleAttempts.length === MAX_ATTEMPTS - 1) {
+            else if (!solved && puzzleAttempts.length === config.max_attempts - 1) {
+                const answerFormatted = sequence.map((symbol) => {
+                    if (["!=", "==", "<=", ">=", "&&", "||"].includes(symbol)) {
+                        return ` ${symbol} `;
+                    }
+                    return symbol;
+                });;
+
                 dispatch(setPuzzleStatus(EPuzzleStatus.FAIL));
-                dispatch(setSnackbarItem({ title: sequence.join(""), permanent: true }));
+                dispatch(setSnackbarItem({ title: answerFormatted.join(""), permanent: true }));
                 dispatch(setGamesPlayed(gamesPlayed + 1));
                 dispatch(setCurrentStreak(0));
 

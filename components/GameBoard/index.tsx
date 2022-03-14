@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
+import config from "../../config";
 import { IRootReducer } from "../../redux/reducers";
 import { getPuzzleAttempts } from "../../redux/selectors/board";
 import { getCurrentAttempt } from "../../redux/selectors/tempBoard";
@@ -7,25 +8,22 @@ import PuzzleRow from "./components/PuzzleRow";
 import { ESymbolStatus } from "./enums/symbolStatus";
 import { IPuzzleCharacter } from "./interfaces/puzzleCharacter";
 
-const ATTEMPTS = 6; 
-const MAX_SYMBOLS = 8; 
-
 const GameBoard = () => {
     const state = useSelector((state:IRootReducer) => state);
     const currentAttempt = getCurrentAttempt(state); 
 
     const puzzleAttempts = getPuzzleAttempts(state);
 
-    const futureAttempts:IPuzzleCharacter[][] = Array.from({ length: ATTEMPTS - puzzleAttempts.length - 1 }).map(() => (
-        Array.from({ length: MAX_SYMBOLS }).map(() => ({ status: ESymbolStatus.UNKNOWN, symbol: "" }))
+    const futureAttempts:IPuzzleCharacter[][] = Array.from({ length: config.max_attempts - puzzleAttempts.length - 1 }).map(() => (
+        Array.from({ length: config.max_symbols }).map(() => ({ status: ESymbolStatus.UNKNOWN, symbol: "" }))
     ))
 
     const currentAttemptHydrated = useMemo(() => {
-        return [ ...currentAttempt, ...Array.from({ length: MAX_SYMBOLS - currentAttempt.length }).map(() => ({ symbol: "", status: ESymbolStatus.UNKNOWN }))];
+        return [ ...currentAttempt, ...Array.from({ length: config.max_symbols - currentAttempt.length }).map(() => ({ symbol: "", status: ESymbolStatus.UNKNOWN }))];
     }, [ currentAttempt ]);
 
     const attempts = useMemo(() => {
-        if (puzzleAttempts.length >= ATTEMPTS) return puzzleAttempts;
+        if (puzzleAttempts.length >= config.max_attempts) return puzzleAttempts;
         else  return [ ...puzzleAttempts, currentAttemptHydrated, ...futureAttempts ];
     }, [ puzzleAttempts, futureAttempts, currentAttemptHydrated ]);
 
