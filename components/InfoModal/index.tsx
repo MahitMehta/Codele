@@ -106,7 +106,7 @@ const InfoModal : React.FC<InfoModalProps> = ({ ...props }) => {
                         0 is not in any spot in the solution.
                     </p>
                 </div>
-                <div className="p-6 space-y-6 border-t dark:border-gray-600">
+                <div className="p-4 space-y-3 border-t dark:border-gray-600">
                     <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                         <b className="font-medium">A new <span className="uppercase font-bold">Codle</span> will be available each day! </b>
                     </p>
