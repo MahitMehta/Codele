@@ -21,9 +21,9 @@ const InfoModal : React.FC<InfoModalProps> = ({ ...props }) => {
                     </p>
                 </div>
                 <div className="p-5 space-y-3 border-t dark:border-gray-600">
-                    <p className="text-base font-bold leading-relaxed text-gray-500 dark:text-gray-400">
+                    <h2 className="text-base font-bold leading-relaxed text-gray-500 dark:text-gray-400">
                         Examples
-                    </p>
+                    </h2>
                     <PuzzleRow 
                         containerClassName="!justify-start"
                         attempt={[
