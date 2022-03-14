@@ -19,19 +19,25 @@ const Snackbar = () => {
     const snackItem = getSnackItem(state);
     const handleNewSnackItem = useCallback(() => {
         if (!snackItem || items.length >= 3) return; 
-         
-        setItems([ { ...snackItem, disappear: false }, ...items, ])
+            
+        let existingItems = items;
+
+        if (!snackItem.permanent) {
+            existingItems = existingItems.map(i => ({ ...i, permanent: false }));
+        };
+
+        setItems([ { ...snackItem, disappear: false }, ...existingItems, ])
     }, [ snackItem ]);
 
     useEffect(handleNewSnackItem, [ handleNewSnackItem ]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const oldItems = items.filter((item) => !item.permanent);
-            if (oldItems.length) {
+            const permanentItems = items.filter((item) => item.permanent);
+            if (!permanentItems.length && items.length) {
                 setItems([
-                    ... oldItems.slice(0, items.length - 1),
-                    { ...oldItems[oldItems.length - 1], disappear: true }
+                    ... items.slice(0, items.length - 1),
+                    { ...items[items.length - 1], disappear: true }
                 ])
             }
         }, 750);

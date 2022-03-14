@@ -101,9 +101,9 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
                     dailyGameOver && (
                         <div className="p-5 pt-0 flex flex-col items-center space-y-5 justify-around">
                             <div className="mt-5 flex-col space-y-1 items-center">
-                                <h3 className="text-md font-medium text-center capitalize text-gray-900 dark:text-white">
+                                <h2 className="text-md font-medium text-center capitalize text-gray-900 dark:text-white">
                                     Next Codle
-                                </h3>          
+                                </h2>          
                                 <Countdown />
                             </div>
                             <button
