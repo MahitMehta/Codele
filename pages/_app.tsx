@@ -12,7 +12,7 @@ const DEBUG = process.env.NODE_ENV === "development";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    ReactGA.initialize("G-QXRM4SF520", { 
+    ReactGA.initialize("UA-169861222-2", { 
       gaOptions: {
         siteSpeedSampleRate: 100,
       },

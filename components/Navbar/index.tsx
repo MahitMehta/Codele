@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { IRootReducer } from "../../redux/reducers";
 import { getPuzzleStatus } from "../../redux/selectors/board";
+import { getGamesPlayed } from "../../redux/selectors/stats";
 
 const Navbar = () => {
     const [ infoModalOpen, setInfoModalOpen ] = useState(false);
@@ -16,23 +17,35 @@ const Navbar = () => {
     const dailyGameOver = useMemo(() => {
         return [ EPuzzleStatus.FAIL, EPuzzleStatus.WON ].includes(puzzleStatus as EPuzzleStatus);
     }, [ puzzleStatus ]);
+    const gamesPlayed = getGamesPlayed(state);
 
     useEffect(() => {
         if (dailyGameOver) {
             setTimeout(() => {
-                if (dailyGameOver) setStatsModalOpen(true);
+                if (dailyGameOver) {
+                    setStatsModalOpen(true);
+                    setInfoModalOpen(false);
+                }
             }, 1000);
         } else {
             setTimeout(() => {
-                if (!dailyGameOver) setInfoModalOpen(true);
+                if (!dailyGameOver && !gamesPlayed) {
+                    setInfoModalOpen(true);
+                    setStatsModalOpen(false);
+                }
             }, 500);
         }
     }, [ dailyGameOver ]);
 
+    const handleInfoModal = (e:boolean) => {
+        setInfoModalOpen(e);
+        if (!e) setStatsModalOpen(false);
+    };
+
     return (
         <>
             <StatsModal open={statsModalOpen} setOpen={setStatsModalOpen} />
-            <InfoModal open={infoModalOpen} setOpen={setInfoModalOpen} /> 
+            <InfoModal open={infoModalOpen} setOpen={handleInfoModal} /> 
             <nav className="flex relative justify-between py-3 border-b border-slate-900/10 lg:px-8 dark:border-slate-300/10 mx-4">
                 <div className="flex z-1">
                     <button 

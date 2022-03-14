@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
@@ -98,7 +99,7 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
                 </div>
                 {
                     dailyGameOver && (
-                        <div className="p-5 flex flex-col items-center space-y-5 justify-around">
+                        <div className="p-5 pt-0 flex flex-col items-center space-y-5 justify-around">
                             <div className="mt-5 flex-col space-y-1 items-center">
                                 <h3 className="text-md font-medium text-center capitalize text-gray-900 dark:text-white">
                                     Next Codle
@@ -106,6 +107,7 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
                                 <Countdown />
                             </div>
                             <button
+                                aria-label="Share Codle"
                                 name={`Share Codle`}
                                 title={"Share"}
                                 onClick={handleShare}
@@ -121,6 +123,30 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
                         </div>
                     )
                 }
+                <p className="text-gray-400 m-1 text-sm mb-5 text-center">
+                    Developed & Designed By<br/>
+                    <Link href="https://github.com/MahitMehta" passHref>
+                        <a 
+                            className="hover:underline"
+                            about="Mahit Mehta's Github Profile" 
+                            target={"_blank"} 
+                            rel="noreferrer noopener"
+                        >
+                            Mahit Mehta
+                        </a>
+                    </Link>
+                    <span>&nbsp;and&nbsp;</span> 
+                    <Link href="https://github.com/TheBlazingTorchic" passHref>
+                        <a 
+                            className="hover:underline"
+                            about="Atharv's Github Profile" 
+                            target={"_blank"} 
+                            rel="noreferrer noopener"
+                        >
+                            Atharv
+                        </a>
+                    </Link>.
+                </p>
             </div>
         </Modal>
     )
