@@ -10,6 +10,7 @@ import { getCurrentStreak, getGamesPlayed, getGamesWon, getMaxStreak } from "../
 import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import Modal, { ModalProps } from "../Modal";
 import Countdown from "./components/Countdown";
+import moment from "moment";
 
 interface StatsModalProps extends ModalProps {}
 
@@ -55,13 +56,20 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
             result += "\n";
         }
 
-        const message = `Codle ${puzzleAttempts.length}/${config.max_attempts}\n\n${result}`;
+        const date = moment().format("L");
+        let message = `${puzzleStatus === EPuzzleStatus.WON ? "I Solved " : ""}Codle ${date}`;
+
+        if (puzzleStatus === EPuzzleStatus.WON) {
+            message += ` in ${puzzleAttempts.length}/${config.max_attempts} Attempts!`;
+        } 
+
+        message += `\n\n${result}`;
 
         if (navigator.share && navigator.share !== undefined) {
             navigator.share({
                 title: 'Codle',
                 text: message,
-                url: 'https://codle.mahitm.com',
+                // url: 'https://codle.mahitm.com',
               })
               .catch((error) => console.log('Error sharing', error));
           } else {
@@ -113,7 +121,7 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
                                 style={{ 
                                     cursor: "pointer",
                                 }} 
-                                className={`flex w-full px-5 py-3 relative transition-colors text-slate-900 text-1xl dark:text-white text-base font-semibold justify-center items-center bg-white dark:bg-slate-400 dark:hover:bg-slate-300 rounded-md overflow-hidden border border-black/5 dark:border-slate-500 flex-1 m-1 border-b-4 `}
+                                className={`flex w-full px-5 py-3 relative transition-colors text-slate-900 text-1xl dark:text-white text-base font-semibold justify-center items-center bg-white dark:bg-slate-400 dark:md:hover:bg-slate-300 rounded-md overflow-hidden border border-black/5 dark:border-slate-500 flex-1 m-1 border-b-4 `}
                             >
                                 <span className="z-10">
                                     <p>Share</p>
