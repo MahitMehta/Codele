@@ -14,6 +14,7 @@ const Modal : React.FC<ModalProps> = ({ title, open, setOpen, children }) => {
         <div 
             aria-hidden={!open}
             style={{ 
+                WebkitBackfaceVisibility: "hidden",
                 MozTransition: "all 150ms cubic-bezier(0.4, 0, 0.2, 1)",
                 WebkitTransition: "all 150ms cubic-bezier(0.4, 0, 0.2, 1)",
                 backgroundColor: open ? "rgba(0, 0, 0, 0.25)" : "rgba(0, 0, 0, 0.0)",
