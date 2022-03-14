@@ -77,7 +77,7 @@ const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {
     return (
         <Modal title="Statistics" { ...props }>
             <div className="w-full min-w-0 md:min-w-[275px] pt-5 px-10">
-                <div className="flex justify-center text-center space-x-5">
+                <div className="flex justify-center text-center space-x-5 pb-6">
                     <div className="flex-col items-center">
                         <h1 className="text-white text-2xl">{ gamesPlayed || "0" }</h1>
                         <p className="text-white text-xs">Played</p>

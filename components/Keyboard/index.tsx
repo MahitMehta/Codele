@@ -25,7 +25,6 @@ const Keyboard = () => {
     const currentAttempt = getCurrentAttempt(state); 
     const puzzleAttempts = getPuzzleAttempts(state);
     const sequence = getPuzzleSequence(state);
-
     // Statistics
     const gamesPlayed = getGamesPlayed(state) || 0;
     const gamesWon = getGamesWon(state) || 0;
