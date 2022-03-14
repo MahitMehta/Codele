@@ -1,5 +1,5 @@
 # About
-Introducing Wordle for Programmers! Codle Lets You Attempt Daily Boolean Statement Guessing Puzzles.
+Introducing Wordle for Programmers! [Codle](https://codle.mahitm.com) Lets You Attempt Daily Boolean Statement Guessing Puzzles.
 
 # Run
 
