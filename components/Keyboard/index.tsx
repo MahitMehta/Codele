@@ -230,10 +230,10 @@ const Keyboard = () => {
 
     return (
         <div style={{ marginBottom: 15 }} className="z-10 mt-auto">
-           <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map((symbol) => ({ 
+           <KeyRow onClick={handleKeyboardClick} keys={["0", "1", "2", "3", "4", "5", "6", "7", "8"].map((symbol) => ({ 
                symbol, type: EKeyType.SYMBOL 
             }))}/>
-           <KeyRow onClick={handleKeyboardClick} keys={["(", ")", "<", ">", "T", "F", "&&", "||", "==", "!="].map((symbol) => ({
+           <KeyRow onClick={handleKeyboardClick} keys={["9", "<", ">", "T", "F", "&&", "||", "==", "!="].map((symbol) => ({
                symbol, type: EKeyType.SYMBOL
            }))}/>
            <KeyRow onClick={handleKeyboardClick} keys={[{
