@@ -11,7 +11,8 @@ export interface ModalProps {
 
 const Modal : React.FC<ModalProps> = ({ title, open, setOpen, children }) => {
     return (
-        <div 
+        <div    
+            onClick={() => setOpen(false)}
             aria-hidden={!open}
             style={{ 
                 WebkitPerspective: 1000,
@@ -23,7 +24,12 @@ const Modal : React.FC<ModalProps> = ({ title, open, setOpen, children }) => {
                 backgroundColor: "rgba(0, 0, 0, 0.25)"
             }} 
             className={`flex scrollbar-hide ${ open ? styles.modal_open : "pointer-events-none" } opacity-0 overflow-hidden transition-all overflow-y-auto fixed h-screen right-0 left-0 z-50 justify-center items-center md:inset-0 h-modal"`}>
-            <div className="flex justify-center relative px-4 md:px-0 py-[15px] h-screen w-full max-w-md">
+            <div 
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
+                className="flex justify-center relative px-4 md:px-0 py-[15px] h-screen w-full max-w-md">
                 <div 
                     style={{
                         WebkitPerspective: 1000,

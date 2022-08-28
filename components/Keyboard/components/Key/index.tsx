@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useContext } from "react";
 import { useSelector } from "react-redux";
+import { GameTypeContext } from "../../../../common/context/gameTypeContext";
 import { EPuzzleStatus } from "../../../../redux/enums/puzzleStatus";
 import { IRootReducer } from "../../../../redux/reducers";
 import { getPuzzleStatus } from "../../../../redux/selectors/board";
@@ -20,8 +21,10 @@ const Key : React.FC<KeyProps> = ({ symbol, type, onClick, icon}) => {
         onClick({ symbol, type });
     };
 
+    const { type:gameType } = useContext(GameTypeContext);
+
     const state = useSelector((state:IRootReducer) => state);
-    const puzzleStatus = getPuzzleStatus(state);
+    const puzzleStatus = getPuzzleStatus(state, gameType);
 
     const keyDisabled = [ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus); 
 

@@ -8,13 +8,16 @@ import Navbar from '../components/Navbar';
 import ParticlesBG from '../components/Particles';
 import { setPuzzleSequence } from '../redux/actions/tempBoard';
 import { getPuzzleHandler } from "./api/puzzle";
-import { puzzleSymbolMap, EPuzzleSymbols  } from "../utils/maps/puzzle";
 import { IRootReducer } from '../redux/reducers';
 import { getPuzzlePattern, getPuzzleTimestamp } from '../redux/selectors/board';
 import { setPuzzleAttempts, setPuzzleIdentifers, setPuzzleStatus } from '../redux/actions/board';
 import Snackbar from '../components/Snackbar';
 import { EPuzzleStatus } from '../redux/enums/puzzleStatus';
-import ReactGA from "react-ga";
+import { EGameType } from '../redux/enums/gameType';
+import { GameTypeContext } from '../common/context/gameTypeContext';
+import { decodeSequence } from '../utils/puzzle/decode';
+import clsx from 'clsx';
+import Link from 'next/link';
 
 interface IStaticProps {
   sequence: string[];
@@ -28,12 +31,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
   const puzzlePattern = getPuzzlePattern(state);
   const puzzleTimestamp = getPuzzleTimestamp(state);
 
-  const decodedSequence = useMemo(() => {
-    return sequence.map(symbol => {
-      const decoded = Buffer.from(symbol, "base64").toString("utf8"); 
-      return puzzleSymbolMap[decoded as EPuzzleSymbols];
-    });
-  }, [ sequence ]);
+  const decodedSequence = useMemo(() => decodeSequence(sequence), [ sequence ]);
 
   useEffect(() => {
       dispatch(setPuzzleSequence(decodedSequence));
@@ -47,35 +45,48 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
             puzzlePattern: sequence.join(""), 
             puzzleTimestamp: timestamp 
           }));
-          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS));
-          dispatch(setPuzzleAttempts([]));
+          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS, EGameType.DAILY));
+          dispatch(setPuzzleAttempts([], EGameType.DAILY));
       } else if (sequence.join("") !== puzzlePattern || puzzleTimestamp != timestamp) {
           dispatch(setPuzzleIdentifers({ 
             puzzlePattern: sequence.join(""), 
             puzzleTimestamp: timestamp 
           }));
-          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS));
-          dispatch(setPuzzleAttempts([]));
+          dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS, EGameType.DAILY));
+          dispatch(setPuzzleAttempts([], EGameType.DAILY));
       }
   }, []);
 
   return (
-    <div className='h-full'>
-      <Head key="index">
-        <title>Game | Codle</title>
-        <link rel="canonical" href="https://codle.mahitm.com/"/>
-      </Head>
-      <ParticlesBG />
-      <Snackbar />
-      <Navbar />
-      <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
-          <GameBoard />
-          <Keyboard />
-          <div style={{ 
-          background: "linear-gradient(180deg, #111729 0%, #2A2A52 36.46%, #774B6B 100%)" 
-        }} className='h-96 fixed w-screen bottom-0 -z-[1]' />
-      </main>
-    </div>
+    <GameTypeContext.Provider value={{ type: EGameType.DAILY }}>
+      <div className='h-full dark:bg-slate-900'> 
+        <Head key="index">
+          <title>Game | Codle</title>
+          <link rel="canonical" href="https://codle.mahitm.com/"/>
+        </Head>
+        <ParticlesBG />
+        <Snackbar />
+        <Navbar />
+        <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
+            <Link href="/unlimited">
+              <div 
+                className={clsx(
+                    "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
+                )}
+                role="button"> 
+                    <p className="text-white font-medium">
+                        Play Codle <u>Unlimited</u>!
+                    </p>
+              </div>
+            </Link>
+            <GameBoard />
+            <Keyboard />
+            <div style={{ 
+            background: "linear-gradient(180deg, #111729 0%, #2A2A52 36.46%, #774B6B 100%)" 
+          }} className='h-96 fixed w-screen bottom-0' />
+        </main>
+      </div>
+    </GameTypeContext.Provider>
   )
 }
 

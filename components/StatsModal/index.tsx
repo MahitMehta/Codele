@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import config from "../../config";
 import { setSnackbarItem } from "../../redux/actions/snackbar";
@@ -11,12 +11,16 @@ import { ESymbolStatus } from "../GameBoard/enums/symbolStatus";
 import Modal, { ModalProps } from "../Modal";
 import Countdown from "./components/Countdown";
 import moment from "moment";
+import { GameTypeContext } from "../../common/context/gameTypeContext";
 
 interface StatsModalProps extends ModalProps {}
 
 const StatsModal : React.FC<StatsModalProps> = ({ ...props }) => {  
     const state = useSelector((state:IRootReducer) => state);
-    const puzzleStatus = getPuzzleStatus(state);    
+    
+    const { type:gameType } = useContext(GameTypeContext);
+    const puzzleStatus = getPuzzleStatus(state, gameType); 
+       
     const dailyGameOver = useMemo(() => {
         return [ EPuzzleStatus.FAIL, EPuzzleStatus.WON ].includes(puzzleStatus as EPuzzleStatus);
     }, [ puzzleStatus ]);

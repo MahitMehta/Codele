@@ -1,19 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSnackbarItem } from "../../redux/actions/snackbar";
 import { IRootReducer } from "../../redux/reducers";
 import { getSnackItem } from "../../redux/selectors/snackbar";
 import SnackItem, { ISnackItem } from "./SnackItem";
 
 interface IStateSnackItem extends ISnackItem {
     disappear: boolean; 
+    id: string; 
 }
 
 const Snackbar = () => {
     const [ items, setItems ] = useState<IStateSnackItem[]>([]);
 
-    const itemsRef = useRef<IStateSnackItem[]>([]);
+    const itemsRef = useRef<IStateSnackItem[]>(items);
 
     itemsRef.current = items; 
+
+    const dispatch = useDispatch();
 
     const state = useSelector((state:IRootReducer) => state);
     const snackItem = getSnackItem(state);
@@ -26,7 +30,7 @@ const Snackbar = () => {
             existingItems = existingItems.map(i => ({ ...i, permanent: false }));
         };
 
-        setItems([ { ...snackItem, disappear: false }, ...existingItems, ])
+        setItems([ { ...snackItem, disappear: false, id: Math.random().toString() }, ...existingItems, ])
     }, [ snackItem ]);
 
     useEffect(handleNewSnackItem, [ handleNewSnackItem ]);
@@ -46,17 +50,19 @@ const Snackbar = () => {
         }
     }, [ items ]);
 
-    const handleUnmountItem = () => {
+    const handleUnmountItem = useCallback(() => {
         const updatedItems = [ ...itemsRef.current.slice(0, itemsRef.current.length - 1) ];
         setItems(updatedItems);
-    };
+        dispatch(setSnackbarItem(undefined));
+    }, [ items ])
+
 
     return (
         <div className="w-full h-full z-[999] fixed pointer-events-none flex-col items-center">
             <div className="mt-24">
                 {
-                    itemsRef.current.map((item, index) => {
-                        return <SnackItem onDisappear={handleUnmountItem} key={index} { ...item }/>
+                    items.map((item) => {
+                        return <SnackItem onDisappear={handleUnmountItem} key={item.id} { ...item }/>
                     })
                 }
             </div>

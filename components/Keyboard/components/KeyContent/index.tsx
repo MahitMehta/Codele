@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { GameTypeContext } from "../../../../common/context/gameTypeContext";
 import { IRootReducer } from "../../../../redux/reducers";
 import { getPuzzleAttempts } from "../../../../redux/selectors/board";
 import { pieceColorMap } from "../../../../utils/maps/colors";
@@ -11,7 +12,8 @@ interface KeyContentProps extends IKey {}
 
 const KeyContent : React.FC<KeyContentProps> = ({ icon, symbol }) => {
     const state = useSelector((state:IRootReducer) => state);
-    const attempts = getPuzzleAttempts(state);
+    const { type } = useContext(GameTypeContext);
+    const attempts = getPuzzleAttempts(state, type);
 
     const status = useMemo(() => {
         let tempStatus = ESymbolStatus.UNKNOWN;

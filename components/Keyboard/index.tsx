@@ -18,12 +18,13 @@ import { getGamesPlayed, getGamesWon, getCurrentStreak, getMaxStreak } from "../
 import { setCurrentStreak, setGamesPlayed, setGamesWon, setMaxStreak } from "../../redux/actions/stats";
 import ReactGA from "react-ga";
 import config from "../../config";
+import { EGameType } from "../../redux/enums/gameType";
 
-const Keyboard = () => {
+const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
     const dispatch = useDispatch();
     const state = useSelector((state:IRootReducer) => state);
     const currentAttempt = getCurrentAttempt(state); 
-    const puzzleAttempts = getPuzzleAttempts(state);
+    const puzzleAttempts = getPuzzleAttempts(state, type);
     const sequence = getPuzzleSequence(state);
     // Statistics
     const gamesPlayed = getGamesPlayed(state) || 0;
@@ -75,11 +76,13 @@ const Keyboard = () => {
     }
 
     const handleEnter = () => {
-        ReactGA.event({
-            category: 'Game Status',
-            action: 'Daily Game In Progress',
-            value: puzzleAttempts.length + 1,
-        });
+        if (type === EGameType.DAILY) {
+            ReactGA.event({
+                category: 'Game Status',
+                action: 'Daily Game In Progress',
+                value: puzzleAttempts.length + 1,
+            });
+        }
 
         if (currentAttempt.length === 0) return; 
 
@@ -109,23 +112,27 @@ const Keyboard = () => {
 
         if (currentAttempt.length >= sequence.length) {
             const solved = newAttempt.every((s) => s.status === ESymbolStatus.CORRECT);
-
-            dispatch(setPuzzleAttempts([...puzzleAttempts, newAttempt ]));
+          
+            dispatch(setPuzzleAttempts([...puzzleAttempts, newAttempt ], type));
             dispatch(setCurrentAttempt([]));
             if (solved) {
-                dispatch(setPuzzleStatus(EPuzzleStatus.WON));
+                dispatch(setPuzzleStatus(EPuzzleStatus.WON, type));
                 dispatch(setSnackbarItem({ title: "Genius!", permanent: true }))
-                dispatch(setGamesPlayed(gamesPlayed + 1));
-                dispatch(setGamesWon(gamesWon + 1));
-                dispatch(setCurrentStreak(currentStreak + 1));
+                
+                // Update Score Board
+                if (type === EGameType.DAILY) {
+                    dispatch(setGamesPlayed(gamesPlayed + 1));
+                    dispatch(setGamesWon(gamesWon + 1));
+                    dispatch(setCurrentStreak(currentStreak + 1));
 
-                if (currentStreak + 1 > maxStreak) {
-                    dispatch(setMaxStreak(maxStreak + 1));
+                    if (currentStreak + 1 > maxStreak) {
+                        dispatch(setMaxStreak(maxStreak + 1));
+                    }
                 }
 
                 ReactGA.event({
                     category: 'Game Status',
-                    action: 'Won Daily Game',
+                    action: type === EGameType.DAILY ? 'Won Daily Game' : "Won Unlimited Game"
                 });
             }
             else if (!solved && puzzleAttempts.length === config.max_attempts - 1) {
@@ -136,14 +143,17 @@ const Keyboard = () => {
                     return symbol;
                 });;
 
-                dispatch(setPuzzleStatus(EPuzzleStatus.FAIL));
+                dispatch(setPuzzleStatus(EPuzzleStatus.FAIL, type));
                 dispatch(setSnackbarItem({ title: answerFormatted.join(""), permanent: true }));
-                dispatch(setGamesPlayed(gamesPlayed + 1));
-                dispatch(setCurrentStreak(0));
+                
+                if (type === EGameType.DAILY) {
+                    dispatch(setGamesPlayed(gamesPlayed + 1));
+                    dispatch(setCurrentStreak(0));
+                }
 
                 ReactGA.event({
                     category: 'Game Status',
-                    action: 'Lost Daily Game',
+                    action: type === EGameType.DAILY ? 'Lost Daily Game' : "Lost Unlimited Game",
                 });
             } 
         }
@@ -178,7 +188,7 @@ const Keyboard = () => {
         handleKeyPress("=="); 
     }
 
-    const puzzleStatus = getPuzzleStatus(state);
+    const puzzleStatus = getPuzzleStatus(state, type);
     const keyboardDisabled = [ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus)
 
     

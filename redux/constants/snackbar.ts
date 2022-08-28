@@ -6,5 +6,5 @@ export enum ESnackbarActions {
 
 export interface ISetSnackbarItem {
     type: ESnackbarActions.SET_SNACKBAR_ITEM,
-    payload: ISnackItem
+    payload?: ISnackItem
 }

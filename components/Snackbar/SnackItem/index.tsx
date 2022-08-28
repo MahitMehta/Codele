@@ -13,20 +13,25 @@ interface SnackItemProps extends ISnackItem {
 
 const SnackItem : React.FC<SnackItemProps> = ({ onDisappear, disappear, ...item }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
-        
-    useEffect(() => {
-        if (!containerRef.current || !disappear) return; 
 
-        gsap.timeline({
+    useEffect(() => {
+        if (!containerRef.current) return; 
+
+        const tl = gsap.timeline({
             repeat: 0
         }).fromTo(containerRef.current, {
             opacity: 1,
         }, {
-            opacity: 0, duration: 0.15
+            opacity: 0, duration: 0.15,
+            delay: 2,
         }).eventCallback("onComplete", () => {
             onDisappear();
         });
-    }, [ containerRef, disappear ]);
+
+        return () => {
+            tl.kill();
+        }
+    }, [ containerRef ]);
 
     return (
         <div ref={containerRef} className="w-min mx-auto bg-white px-3 py-4 rounded-md my-3">
@@ -35,4 +40,4 @@ const SnackItem : React.FC<SnackItemProps> = ({ onDisappear, disappear, ...item 
     )
 }
 
-export default SnackItem;
+export default React.memo(SnackItem);
