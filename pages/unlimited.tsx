@@ -30,15 +30,14 @@ const Unlimited = () => {
     const [ generating, setGenerating ] = useState(false);
 
     const getPuzzle = useCallback(async () : Promise<boolean> => {
-        // setGenerating(true);
-        // const puzzle = await fetch("/api/puzzle/generate").then(res => res.json()).catch(() => null)
-        // if (!puzzle || !puzzle.sequence || !puzzle.sequence.length) return false; 
-        // const decodedPuzzle = decodeSequence(puzzle.sequence); 
-        // dispatch(setPuzzleSequence(decodedPuzzle));
-        // dispatch(setPuzzleIdentifersUnlimited({ puzzlePattern: puzzle.sequence }));
-        // setGenerating(false);
-        // return true; 
-        return false; 
+        setGenerating(true);
+        const puzzle = await fetch("/api/puzzle/generate").then(res => res.json()).catch(() => null)
+        if (!puzzle || !puzzle.sequence || !puzzle.sequence.length) return false; 
+        const decodedPuzzle = decodeSequence(puzzle.sequence); 
+        dispatch(setPuzzleSequence(decodedPuzzle));
+        dispatch(setPuzzleIdentifersUnlimited({ puzzlePattern: puzzle.sequence }));
+        setGenerating(false);
+        return true; 
     }, [ dispatch ]);
 
     const handleNewCodle = useCallback(async () => {
