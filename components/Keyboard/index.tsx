@@ -80,7 +80,7 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
             ReactGA.event({
                 category: 'Game Status',
                 action: 'Daily Game In Progress',
-                value: puzzleAttempts.length + 1,
+                value: puzzleAttempts?.length + 1,
             });
         }
 

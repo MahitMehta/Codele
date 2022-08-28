@@ -1,12 +1,15 @@
 import { EGameType } from "../enums/gameType";
+import { EPuzzleStatus } from "../enums/puzzleStatus";
 import { IRootReducer } from "../reducers";
 
 export const getPuzzleAttempts = (state:IRootReducer, gameType: EGameType = EGameType.DAILY) => {
-    return gameType === EGameType.DAILY ? state.board.puzzleAttempts : state.board.puzzleAttemptsUnlimited;
+    const attempts = gameType === EGameType.DAILY ? state.board.puzzleAttempts : state.board.puzzleAttemptsUnlimited;
+    return attempts || [];
 }
 
 export const getPuzzleStatus = (state:IRootReducer, gameType: EGameType = EGameType.DAILY) => {
-    return gameType === EGameType.DAILY ? state.board.puzzleStatus : state.board.puzzleStatusUnlimited;
+    const status = gameType === EGameType.DAILY ? state.board.puzzleStatus : state.board.puzzleStatusUnlimited;
+    return status || EPuzzleStatus.IN_PROGRESS;
 }
 
 export const getPuzzlePattern = (state:IRootReducer) => state.board.puzzlePattern;

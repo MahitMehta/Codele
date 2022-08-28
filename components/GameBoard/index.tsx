@@ -15,7 +15,7 @@ const GameBoard = ({ type = EGameType.DAILY } : { type?: EGameType}) => {
 
     const puzzleAttempts = getPuzzleAttempts(state, type);
 
-    const futureAttempts:IPuzzleCharacter[][] = Array.from({ length: config.max_attempts - puzzleAttempts.length - 1 }).map(() => (
+    const futureAttempts:IPuzzleCharacter[][] = Array.from({ length: config.max_attempts - puzzleAttempts?.length - 1 }).map(() => (
         Array.from({ length: config.max_symbols }).map(() => ({ status: ESymbolStatus.UNKNOWN, symbol: "" }))
     ))
 
@@ -24,7 +24,7 @@ const GameBoard = ({ type = EGameType.DAILY } : { type?: EGameType}) => {
     }, [ currentAttempt ]);
 
     const attempts = useMemo(() => {
-        if (puzzleAttempts.length >= config.max_attempts) return puzzleAttempts;
+        if (puzzleAttempts?.length >= config.max_attempts) return puzzleAttempts;
         else  return [ ...puzzleAttempts, currentAttemptHydrated, ...futureAttempts ];
     }, [ puzzleAttempts, futureAttempts, currentAttemptHydrated ]);
 
