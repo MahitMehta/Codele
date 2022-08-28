@@ -71,7 +71,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
             <Link href="/unlimited">
               <div 
                 className={clsx(
-                    "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
+                    "pt-10 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
                 )}
                 role="button"> 
                     <p className="text-white font-medium">

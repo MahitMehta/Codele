@@ -32,7 +32,7 @@ const Unlimited = () => {
     const getPuzzle = useCallback(async () : Promise<boolean> => {
         setGenerating(true);
         const puzzle = await fetch("/api/puzzle/generate").then(res => res.json()).catch(() => null)
-        if (!puzzle || !puzzle.sequence || !puzzle.sequence.length) return false; 
+        if (!puzzle || !puzzle?.sequence || !puzzle.sequence?.length) return false; 
         const decodedPuzzle = decodeSequence(puzzle.sequence); 
         dispatch(setPuzzleSequence(decodedPuzzle));
         dispatch(setPuzzleIdentifersUnlimited({ puzzlePattern: puzzle.sequence }));
@@ -56,7 +56,7 @@ const Unlimited = () => {
     }, [ getPuzzle, dispatch ]);
 
     useEffect(() => {
-        if (puzzlePatternUnlimited && puzzlePatternUnlimited.length && puzzleSquence.length === 0) {
+        if (puzzlePatternUnlimited && puzzlePatternUnlimited?.length && puzzleSquence?.length === 0) {
             dispatch(setPuzzleSequence(decodeSequence(puzzlePatternUnlimited)));
         };
     }, [ puzzlePatternUnlimited, puzzleSquence ]);
@@ -80,7 +80,7 @@ const Unlimited = () => {
                     <div 
                         onClick={handleNewCodle}
                         className={clsx(
-                            "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity",
+                            "pt-10 z-10 flex space-x-2 hover:opacity-75 transition-opacity",
                             generating ? "cursor-not-allowed" : 'cursor-pointer' 
                         )}
                         role="button"> 
