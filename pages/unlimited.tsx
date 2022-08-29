@@ -76,11 +76,11 @@ const Unlimited = () => {
                 <ParticlesBG />
                 <Snackbar />
                 <Navbar type={EGameType.UNLIMITED} />
-                <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
+                <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex min-h-[575px] md:min-h-[675px] flex-col items-center'>
                     <div 
                         onClick={handleNewCodle}
                         className={clsx(
-                            "pt-10 z-10 flex space-x-2 hover:opacity-75 transition-opacity",
+                            "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity",
                             generating ? "cursor-not-allowed" : 'cursor-pointer' 
                         )}
                         role="button"> 

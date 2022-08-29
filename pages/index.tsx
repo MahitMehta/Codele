@@ -67,11 +67,11 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
         <ParticlesBG />
         <Snackbar />
         <Navbar />
-        <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex justify-center min-h-[575px] md:min-h-[675px] flex-col items-center'>
+        <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex min-h-[575px] md:min-h-[675px] flex-col items-center'>
             <Link href="/unlimited">
               <div 
                 className={clsx(
-                    "pt-10 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
+                    "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
                 )}
                 role="button"> 
                     <p className="text-white font-medium">
