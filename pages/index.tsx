@@ -35,7 +35,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
 
   useEffect(() => {
       dispatch(setPuzzleSequence(decodedSequence));
-  }, [ decodedSequence, timestamp ]); 
+  }, [ decodedSequence, timestamp, dispatch ]); 
 
   useEffect(() => { 
       if (!sequence.length || !timestamp) return; 
@@ -55,7 +55,7 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
           dispatch(setPuzzleStatus(EPuzzleStatus.IN_PROGRESS, EGameType.DAILY));
           dispatch(setPuzzleAttempts([], EGameType.DAILY));
       }
-  }, []);
+  }, [ dispatch, puzzlePattern, puzzleTimestamp, sequence, timestamp ]);
 
   return (
     <GameTypeContext.Provider value={{ type: EGameType.DAILY }}>
@@ -68,16 +68,18 @@ const Home: NextPage<IStaticProps> = ({ sequence, timestamp }) => {
         <Snackbar />
         <Navbar />
         <main style={{ height: "calc(100% - var(--navbar-height))"}} className='flex min-h-[575px] md:min-h-[675px] flex-col items-center'>
-            <Link href="/unlimited">
-              <div 
-                className={clsx(
-                    "pt-5 z-10 flex space-x-2 hover:opacity-75 transition-opacity"
-                )}
-                role="button"> 
-                    <p className="text-white font-medium">
-                        Play Codle <u>Unlimited</u>!
-                    </p>
-              </div>
+            <Link href="/unlimited" passHref>
+              <a className='z-10'>
+                <div 
+                  className={clsx(
+                      "pt-5flex space-x-2 hover:opacity-75 transition-opacity"
+                  )}
+                  role="button"> 
+                      <p className="text-white font-medium">
+                          Play Codle <u>Unlimited</u>!
+                      </p>
+                </div>
+              </a>
             </Link>
             <GameBoard />
             <Keyboard />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPuzzleAttempts, setPuzzleStatus } from "../../redux/actions/board";
 import { setCurrentAttempt } from "../../redux/actions/tempBoard";
@@ -32,7 +32,7 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
     const currentStreak = getCurrentStreak(state) || 0;
     const maxStreak = getMaxStreak(state) || 0;
 
-    const gradedCurrentAttempt = () => {
+    const gradedCurrentAttempt = useCallback(() => {
         const gradedAttempt:(IPuzzleCharacter | null)[] = [];
 
         for (let i = 0; i < sequence.length; i++) {
@@ -65,17 +65,17 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
         }
 
         return gradedAttempt as IPuzzleCharacter[];
-    };
+    }, [ currentAttempt, sequence ]);
 
-    const handleKeyPress = (key:string) => {
+    const handleKeyPress = useCallback((key:string) => {
         if (currentAttempt.length >= sequence.length) return; 
         dispatch(setCurrentAttempt([ 
             ...currentAttempt, 
             { symbol: key, status: ESymbolStatus.UNKNOWN }
         ]));
-    }
+    }, [ currentAttempt, sequence.length, dispatch ])
 
-    const handleEnter = () => {
+    const handleEnter = useCallback(() => {
         if (type === EGameType.DAILY) {
             ReactGA.event({
                 category: 'Game Status',
@@ -157,15 +157,15 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
                 });
             } 
         }
-    }
+    }, [ dispatch, currentAttempt.length, currentStreak, gamesPlayed, gamesWon, gradedCurrentAttempt, maxStreak, puzzleAttempts, sequence, type ])
 
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         if (!!currentAttempt.length) {
             dispatch(setCurrentAttempt(currentAttempt.slice(0, currentAttempt.length - 1)));
         }
-    }
+    }, [ currentAttempt, dispatch ])
 
-    const handleEqual = () => {
+    const handleEqual = useCallback(() => {
         if (currentAttempt.length > 0 && currentAttempt[currentAttempt.length - 1].symbol === "<") {
             dispatch(setCurrentAttempt([ 
                 ...currentAttempt.slice(0, currentAttempt.length - 1), 
@@ -186,13 +186,13 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
             return; 
         }
         handleKeyPress("=="); 
-    }
+    }, [ currentAttempt, dispatch, handleKeyPress ])
 
     const puzzleStatus = getPuzzleStatus(state, type);
     const keyboardDisabled = [ EPuzzleStatus.WON, EPuzzleStatus.FAIL ].includes(puzzleStatus as EPuzzleStatus)
 
     
-    const keyboardHandler = (e:KeyboardEvent) => {
+    const keyboardHandler = useCallback((e:KeyboardEvent) => {
         if (keyboardDisabled) return; 
 
         switch (e.key) {
@@ -222,12 +222,12 @@ const Keyboard = ({ type = EGameType.DAILY } : { type?: EGameType }) => {
             case Key.Enter: { handleEnter(); break; }
             default: { break; }
         }
-    };
+    }, [ keyboardDisabled, handleBack, handleEnter, handleEqual, handleKeyPress ]);
 
     useEffect(() => {
         window.addEventListener("keyup", keyboardHandler);
         return () => window.removeEventListener("keyup", keyboardHandler);
-    }, [ currentAttempt, sequence, dispatch ]);
+    }, [ currentAttempt, sequence, dispatch, keyboardHandler ]);
 
     const handleKeyboardClick = (key:IKey) => {
         switch (key.type) {

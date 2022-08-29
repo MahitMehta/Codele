@@ -1,10 +1,10 @@
 import development from "./env/development";
 import production from "./env/production";
-import _ from "lodash";
+import extend from "lodash/extend";
 
 const dynamicConfig = process.env.NODE_ENV === "development" ? development : production; 
 
-const config = _.extend({
+const config = extend({
     name: "Codle",
     max_attempts: 6,
     max_symbols: 8,

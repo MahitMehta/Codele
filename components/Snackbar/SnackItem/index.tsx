@@ -31,7 +31,7 @@ const SnackItem : React.FC<SnackItemProps> = ({ onDisappear, disappear, ...item 
         return () => {
             tl.kill();
         }
-    }, [ containerRef ]);
+    }, [ containerRef, onDisappear ]);
 
     return (
         <div ref={containerRef} className="w-min mx-auto bg-white px-3 py-4 rounded-md my-3">

@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { QuestionMarkCircleIcon, ChartBarIcon } from "@heroicons/react/outline";
 import InfoModal from "../InfoModal";
-import StatsModal from "../StatsModal";
 import { useSelector } from "react-redux";
 import { EPuzzleStatus } from "../../redux/enums/puzzleStatus";
 import { IRootReducer } from "../../redux/reducers";
 import { getPuzzleStatus } from "../../redux/selectors/board";
 import { getGamesPlayed } from "../../redux/selectors/stats";
 import { EGameType } from "../../redux/enums/gameType";
+import dynamic from "next/dynamic";
+
+const StatsModal = dynamic(() => import("../StatsModal"));
 
 const Navbar = ({ type = EGameType.DAILY }: { type?: EGameType }) => {
     const [ infoModalOpen, setInfoModalOpen ] = useState(false);
@@ -36,7 +38,7 @@ const Navbar = ({ type = EGameType.DAILY }: { type?: EGameType }) => {
                 }
             }, 500);
         }
-    }, [ dailyGameOver ]);
+    }, [ dailyGameOver, gamesPlayed ]);
 
     const handleInfoModal = (e:boolean) => {
         setInfoModalOpen(e);

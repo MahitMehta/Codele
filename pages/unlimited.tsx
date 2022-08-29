@@ -59,7 +59,7 @@ const Unlimited = () => {
         if (puzzlePatternUnlimited && puzzlePatternUnlimited?.length && puzzleSquence?.length === 0) {
             dispatch(setPuzzleSequence(decodeSequence(puzzlePatternUnlimited)));
         };
-    }, [ puzzlePatternUnlimited, puzzleSquence ]);
+    }, [ puzzlePatternUnlimited, puzzleSquence, dispatch ]);
     
     useEffect(() => {
         if (puzzlePatternUnlimited && puzzlePatternUnlimited?.length) return; 

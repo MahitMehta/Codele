@@ -22,9 +22,9 @@ const Snackbar = () => {
     const state = useSelector((state:IRootReducer) => state);
     const snackItem = getSnackItem(state);
     const handleNewSnackItem = useCallback(() => {
-        if (!snackItem || items.length >= 3) return; 
+        if (!snackItem || itemsRef.current?.length >= 3) return; 
             
-        let existingItems = items;
+        let existingItems = itemsRef.current;
 
         if (!snackItem.permanent) {
             existingItems = existingItems.map(i => ({ ...i, permanent: false }));
@@ -54,7 +54,7 @@ const Snackbar = () => {
         const updatedItems = [ ...itemsRef.current.slice(0, itemsRef.current.length - 1) ];
         setItems(updatedItems);
         dispatch(setSnackbarItem(undefined));
-    }, [ items ])
+    }, [ dispatch ])
 
 
     return (
